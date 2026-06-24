@@ -2,44 +2,26 @@ import { Link } from 'react-router-dom'
 import Hero from '../components/Hero'
 import Keycap from '../components/Keycap'
 import { SectionHead, Kicker } from '../components/Section'
-import Newsletter from '../components/Newsletter'
+import { sagar, vivek, gayathri, ravi } from '../assets/creators'
 
 const drops = [
   {
     type: 'Podcast',
     date: 'Jun 2026',
-    title: 'Launching Ctrl+Shift+AI, our new podcast',
-    blurb: 'Conversations with engineers across stacks and career stages on how they really use AI.',
+    title: 'Episode 1: From Application Developer to AI Engineer',
+    blurb: 'Our launch episode. Vivek Raj on going from application developer to AI engineer during the LLM wave.',
     to: '/podcast',
   },
-  {
-    type: 'Article',
-    date: 'Jun 2026',
-    title: "Prompt-driven development: what stuck, what didn't",
-    blurb: 'Six months of building with agents. Our honest scorecard across four different stacks.',
-    to: '/articles',
-  },
-  {
-    type: 'Article',
-    date: 'May 2026',
-    title: 'We let AI write our standups for a month',
-    blurb: 'An experiment in automating the most human ritual in engineering. The results were mixed.',
-    to: '/articles',
-  },
 ]
 
-const platforms = ['Spotify', 'Apple Podcasts', 'YouTube', 'RSS']
+const platforms = ['YouTube']
 
 const creators = [
-  { name: 'Sagar Vemala', role: 'Engineering Manager', focus: 'Full-stack · AI tooling' },
-  { name: 'Vivek Raj', role: 'AI Engineer', focus: 'LLM apps · RAG · MCP' },
-  { name: 'Gayathri', role: 'Senior DevOps Engineer', focus: 'Platform · reliability' },
-  { name: 'Ravi Seelam', role: 'AI Engineer', focus: 'Applied AI · agents' },
+  { name: 'Sagar Vemala', role: 'Engineering Manager', focus: 'Full-stack · AI tooling', photo: sagar },
+  { name: 'Vivek Raj', role: 'AI Engineer', focus: 'LLM apps · RAG · MCP', photo: vivek },
+  { name: 'Gayathri', role: 'Senior DevOps Engineer', focus: 'Platform · reliability', photo: gayathri },
+  { name: 'Ravi Seelam', role: 'Senior DevOps Engineer', focus: 'Cloud · agentic AI', photo: ravi },
 ]
-
-function initials(name: string) {
-  return name.split(' ').map((p) => p[0]).slice(0, 2).join('')
-}
 
 function Home() {
   return (
@@ -129,9 +111,12 @@ function Home() {
         <div className="mt-10 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
           {creators.map((c) => (
             <div key={c.name} className="bg-bg p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-line font-mono text-sm text-signal">
-                {initials(c.name)}
-              </div>
+              <img
+                src={c.photo}
+                alt={c.name}
+                loading="lazy"
+                className="h-12 w-12 rounded-full border border-line object-cover"
+              />
               <h3 className="mt-4 font-medium tracking-tight">{c.name}</h3>
               <p className="label mt-1 normal-case tracking-normal">{c.role}</p>
               <p className="mt-3 text-sm text-muted">{c.focus}</p>
@@ -139,9 +124,6 @@ function Home() {
           ))}
         </div>
       </section>
-
-      {/* NEWSLETTER */}
-      <Newsletter />
     </>
   )
 }

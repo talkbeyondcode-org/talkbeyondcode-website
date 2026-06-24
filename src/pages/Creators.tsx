@@ -1,4 +1,5 @@
 import { PageHeader, Kicker } from '../components/Section'
+import { sagar, vivek, gayathri, ravi } from '../assets/creators'
 
 type Creator = {
   name: string
@@ -6,42 +7,48 @@ type Creator = {
   bio: string
   stack: string[]
   talks: string[]
+  photo: string
+  linkedin: string
 }
 
 const creators: Creator[] = [
   {
     name: 'Sagar Vemala',
-    role: 'Engineering Manager',
-    bio: 'Builds product end to end and has opinions about every layer. Currently deep in AI-assisted workflows and how they reshape team velocity.',
+    role: 'Engineering Manager @ WaveMaker',
+    bio: 'Builds product end to end and has opinions about every layer. Leads developer experience through WaveMaker’s shift to AI-native, agentic development.',
     stack: ['TypeScript', 'React', 'Node', 'LLM tooling'],
     talks: ['AI workflows', 'DX', 'Architecture'],
+    photo: sagar,
+    linkedin: 'https://www.linkedin.com/in/sagar-vemala/',
   },
   {
     name: 'Vivek Raj',
-    role: 'AI Engineer',
+    role: 'AI Engineer @ WaveMaker',
     bio: 'Went from application developer to AI engineer during the LLM wave. Ships LLM apps, RAG systems and MCP-based tooling in production.',
     stack: ['Python', 'LLMs', 'RAG', 'MCP'],
     talks: ['Applied AI', 'Agents', 'Career change'],
+    photo: vivek,
+    linkedin: 'https://www.linkedin.com/in/vr384/',
   },
   {
     name: 'Gayathri',
-    role: 'Senior DevOps Engineer',
+    role: 'Senior DevOps Engineer @ WaveMaker',
     bio: 'Keeps the platform honest. Cares about reliability, the boring infrastructure that never gets demoed, and where AI actually helps in ops.',
-    stack: ['Kubernetes', 'Terraform', 'CI/CD', 'AWS'],
+    stack: ['Kubernetes', 'Docker', 'CI/CD', 'AWS'],
     talks: ['Platform eng', 'Reliability', 'AI ops'],
+    photo: gayathri,
+    linkedin: 'https://www.linkedin.com/in/tejaswini-k-093954182/',
   },
   {
     name: 'Ravi Seelam',
-    role: 'AI Engineer',
-    bio: 'Spends his time turning research-shaped ideas into things that survive real traffic. Interested in evaluation, agents and the unglamorous glue.',
-    stack: ['Python', 'LLMs', 'Vector DBs', 'Evals'],
-    talks: ['Applied AI', 'Evaluation', 'Production AI'],
+    role: 'Senior DevOps Engineer @ WaveMaker',
+    bio: 'Turns research-shaped ideas into things that survive real traffic. Builds CI/CD, cloud infra and agentic AI platforms with MCP, LangGraph and full-stack observability.',
+    stack: ['AWS', 'Kubernetes', 'Terraform', 'Agentic AI'],
+    talks: ['Platform eng', 'AI ops', 'Production AI'],
+    photo: ravi,
+    linkedin: 'https://www.linkedin.com/in/seelam-raviteja-6ba017209/',
   },
 ]
-
-function initials(name: string) {
-  return name.split(' ').map((p) => p[0]).slice(0, 2).join('')
-}
 
 function TagRow({ head, tags }: { head: string; tags: string[] }) {
   return (
@@ -72,9 +79,12 @@ function Creators() {
         {creators.map((c) => (
           <article key={c.name} className="flex flex-col gap-5 bg-bg p-8">
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-line font-mono text-signal">
-                {initials(c.name)}
-              </div>
+              <img
+                src={c.photo}
+                alt={c.name}
+                loading="lazy"
+                className="h-16 w-16 shrink-0 rounded-full border border-line object-cover"
+              />
               <div>
                 <h2 className="text-2xl font-semibold tracking-tight">{c.name}</h2>
                 <p className="label mt-1 normal-case tracking-normal text-muted">{c.role}</p>
@@ -86,9 +96,7 @@ function Creators() {
               <TagRow head="Talks about" tags={c.talks} />
             </div>
             <div className="flex gap-4 font-mono text-xs uppercase tracking-wide text-muted">
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="transition-colors hover:text-signal">LinkedIn</a>
-              <a href="https://x.com" target="_blank" rel="noreferrer" className="transition-colors hover:text-signal">X</a>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="transition-colors hover:text-signal">GitHub</a>
+              <a href={c.linkedin} target="_blank" rel="noreferrer" className="transition-colors hover:text-signal">LinkedIn</a>
             </div>
           </article>
         ))}
@@ -116,10 +124,10 @@ function Creators() {
           Want us on your podcast, or want to collaborate?
         </h2>
         <a
-          href="mailto:hello@talkbeyondcode.dev"
+          href="mailto:talkbeyondcode@gmail.com"
           className="shrink-0 rounded-sm bg-signal px-5 py-3 font-mono text-sm uppercase tracking-wide text-bg transition-transform hover:-translate-y-0.5"
         >
-          hello@talkbeyondcode.dev
+          talkbeyondcode@gmail.com
         </a>
       </section>
     </div>

@@ -5,7 +5,7 @@ import { tbcLogo } from '../assets/brand'
 const links = [
   { to: '/creators', label: 'Creators' },
   { to: '/podcast', label: 'Podcast' },
-  { to: '/articles', label: 'Articles' },
+  { to: '/blog', label: 'Blog' },
 ]
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {
