@@ -8,7 +8,7 @@ const columns = [
       { label: 'Home', to: '/' },
       { label: 'Creators', to: '/creators' },
       { label: 'Podcast', to: '/podcast' },
-      { label: 'Articles', to: '/articles' },
+      { label: 'Blog', to: '/blog' },
     ],
   },
 ]
@@ -63,10 +63,10 @@ function Footer() {
         <div>
           <h2 className="label">Contact</h2>
           <a
-            href="mailto:hello@talkbeyondcode.dev"
+            href="mailto:talkbeyondcode@gmail.com"
             className="mt-4 block text-sm text-ink transition-colors hover:text-signal"
           >
-            hello@talkbeyondcode.dev
+            talkbeyondcode@gmail.com
           </a>
         </div>
       </div>

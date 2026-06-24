@@ -9,7 +9,7 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Creators from './pages/Creators'
 import Podcast from './pages/Podcast'
-import Articles from './pages/Articles'
+import Blog from './pages/Blog'
 import NotFound from './pages/NotFound'
 
 const router = createBrowserRouter([
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'creators', element: <Creators /> },
       { path: 'podcast', element: <Podcast /> },
-      { path: 'articles', element: <Articles /> },
+      { path: 'blog', element: <Blog /> },
       { path: '*', element: <NotFound /> },
     ],
   },

@@ -1,7 +1,9 @@
-import Keycap from '../components/Keycap'
 import { Kicker } from '../components/Section'
+import { csaiLogo } from '../assets/brand'
 
-const platforms = ['Spotify', 'Apple Podcasts', 'YouTube', 'RSS']
+const platforms = ['YouTube']
+
+const WATCH_URL = 'https://youtu.be/wDLA1Qlw_Ds'
 
 type Episode = {
   n: string
@@ -9,6 +11,7 @@ type Episode = {
   meta: string
   status: string
   live?: boolean
+  href?: string
 }
 
 const episodes: Episode[] = [
@@ -16,26 +19,9 @@ const episodes: Episode[] = [
     n: '01',
     title: 'From Application Developer to AI Engineer',
     meta: 'Guest: Vivek Raj · Host: Gayathri',
-    status: 'Launch episode',
+    status: 'Watch now',
     live: true,
-  },
-  {
-    n: '02',
-    title: 'How a staff engineer reviews AI-generated code',
-    meta: 'Guest: TBA · Staff Engineer',
-    status: 'Upcoming',
-  },
-  {
-    n: '03',
-    title: 'Junior in the age of agents: learning to code in 2026',
-    meta: 'Guest: TBA · Early-career dev',
-    status: 'Upcoming',
-  },
-  {
-    n: '04',
-    title: 'Shipping an AI feature without an ML team',
-    meta: 'Guest: TBA · Product Engineer',
-    status: 'Upcoming',
+    href: WATCH_URL,
   },
 ]
 
@@ -44,23 +30,18 @@ function Podcast() {
     <div className="mx-auto max-w-6xl px-6 py-20 md:px-10">
       {/* hero */}
       <div className="grid gap-12 border-b border-line pb-20 md:grid-cols-[1fr_1.2fr] md:items-center">
-        <div className="order-2 rounded-lg border border-line bg-surface/40 p-10 md:order-1">
-          <div className="flex items-center justify-center gap-3">
-            <Keycap active>Ctrl</Keycap>
-            <span className="text-muted">+</span>
-            <Keycap active>Shift</Keycap>
-            <span className="text-muted">+</span>
-            <Keycap active>AI</Keycap>
-          </div>
-          <p className="mt-8 text-center font-mono text-sm uppercase tracking-widest text-muted">
-            how real engineers ship with AI
-          </p>
+        <div className="order-2 flex items-center justify-center rounded-lg border border-line bg-surface/40 p-10 md:order-1">
+          <img
+            src={csaiLogo}
+            alt="Ctrl+Shift+AI — a TalkBeyondCode podcast"
+            className="w-full max-w-sm"
+          />
         </div>
 
         <div className="order-1 md:order-2">
           <Kicker>the podcast · season 01</Kicker>
           <h1 className="mt-4 text-[clamp(2.4rem,6vw,4.2rem)] font-semibold leading-[1.02] tracking-tight">
-            Ctrl+Shift+AI
+            How real engineers ship with AI
           </h1>
           <p className="mt-5 max-w-xl text-lg text-muted">
             Conversations with people across career stages, expertise levels and tech
@@ -74,12 +55,12 @@ function Podcast() {
             ))}
           </div>
           <a
-            href="https://youtube.com"
+            href={WATCH_URL}
             target="_blank"
             rel="noreferrer"
             className="mt-8 inline-flex items-center gap-2 rounded-sm bg-signal px-5 py-3 font-mono text-sm uppercase tracking-wide text-bg transition-transform hover:-translate-y-0.5"
           >
-            Follow the podcast →
+            Watch episode 1 →
           </a>
         </div>
       </div>
@@ -92,35 +73,44 @@ function Podcast() {
         </h2>
         <ul className="mt-8">
           {episodes.map((ep) => (
-            <li
-              key={ep.n}
-              className="grid grid-cols-[auto_1fr_auto] items-center gap-x-6 border-b border-line py-6"
-            >
-              <span className="font-mono text-2xl tabular-nums text-signal-dim">{ep.n}</span>
-              <div>
-                <h3 className="text-lg font-medium tracking-tight md:text-xl">{ep.title}</h3>
-                <p className="label mt-1 normal-case tracking-normal text-muted">{ep.meta}</p>
-              </div>
-              <div className="flex items-center gap-4">
-                <span
-                  className={`hidden font-mono text-xs uppercase tracking-wide sm:inline ${
-                    ep.live ? 'text-signal' : 'text-muted'
-                  }`}
-                >
-                  {ep.status}
-                </span>
-                <span
-                  className={`flex h-11 w-11 items-center justify-center rounded-full border ${
-                    ep.live ? 'border-signal text-signal' : 'border-line text-muted'
-                  }`}
-                  aria-hidden="true"
-                >
-                  ▶
-                </span>
-              </div>
+            <li key={ep.n}>
+              <a
+                href={ep.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group grid grid-cols-[auto_1fr_auto] items-center gap-x-6 border-b border-line py-6 transition-colors hover:bg-surface/40"
+              >
+                <span className="font-mono text-2xl tabular-nums text-signal-dim">{ep.n}</span>
+                <div>
+                  <h3 className="text-lg font-medium tracking-tight transition-colors group-hover:text-signal md:text-xl">
+                    {ep.title}
+                  </h3>
+                  <p className="label mt-1 normal-case tracking-normal text-muted">{ep.meta}</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span
+                    className={`hidden font-mono text-xs uppercase tracking-wide sm:inline ${
+                      ep.live ? 'text-signal' : 'text-muted'
+                    }`}
+                  >
+                    {ep.status}
+                  </span>
+                  <span
+                    className={`flex h-11 w-11 items-center justify-center rounded-full border ${
+                      ep.live ? 'border-signal text-signal' : 'border-line text-muted'
+                    }`}
+                    aria-hidden="true"
+                  >
+                    ▶
+                  </span>
+                </div>
+              </a>
             </li>
           ))}
         </ul>
+        <p className="mt-8 font-mono text-xs uppercase tracking-wide text-muted">
+          More episodes coming soon.
+        </p>
       </section>
 
       {/* be a guest */}
@@ -134,7 +124,7 @@ function Podcast() {
           </p>
         </div>
         <a
-          href="mailto:hello@talkbeyondcode.dev"
+          href="mailto:talkbeyondcode@gmail.com"
           className="shrink-0 rounded-sm bg-signal px-5 py-3 font-mono text-sm uppercase tracking-wide text-bg transition-transform hover:-translate-y-0.5"
         >
           Pitch yourself →

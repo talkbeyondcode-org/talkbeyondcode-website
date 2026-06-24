@@ -2,8 +2,8 @@ import { useRef, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import Keycap from './Keycap'
 import { Kicker } from './Section'
+import { csaiLogo } from '../assets/brand'
 
 // Three.js is heavy and only used here — split it into its own chunk.
 const Oscilloscope = lazy(() => import('./Oscilloscope'))
@@ -60,13 +60,12 @@ function Hero() {
           messages, from four working engineers. No scripts, no gatekeeping.
         </p>
 
-        <div data-hero-stagger className="flex items-center gap-2">
-          <Keycap active>Ctrl</Keycap>
-          <span className="text-muted">+</span>
-          <Keycap active>Shift</Keycap>
-          <span className="text-muted">+</span>
-          <Keycap active>AI</Keycap>
-          <span className="label ml-2">our podcast on shipping with AI</span>
+        <div data-hero-stagger>
+          <img
+            src={csaiLogo}
+            alt="Ctrl+Shift+AI — a TalkBeyondCode podcast"
+            className="h-14 w-auto md:h-16"
+          />
         </div>
 
         <div data-hero-stagger className="mt-2 flex flex-wrap items-center gap-3">
@@ -77,10 +76,10 @@ function Hero() {
             <span aria-hidden="true">▶</span> Listen to the podcast
           </Link>
           <Link
-            to="/articles"
+            to="/blog"
             className="inline-flex items-center gap-2 rounded-sm border border-line px-5 py-3 font-mono text-sm uppercase tracking-wide text-ink transition-colors hover:border-signal/60 hover:text-signal"
           >
-            Read the articles
+            Read the blog
           </Link>
         </div>
       </div>
