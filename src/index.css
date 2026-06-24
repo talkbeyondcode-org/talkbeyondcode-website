@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+/* ── TalkBeyondCode design system ──────────────────────────────────────
+   Aesthetic: engineering instrument. Cool blue-black + brand-cyan signal.
+   See DESIGN.md. OKLCH only; neutrals tinted cool (hue ~258).           */
+@theme {
+  /* cool blue-black neutrals (brand: #07090F / #0D1322), brand cyan signal */
+  --color-bg: oklch(0.13 0.012 258);
+  --color-surface: oklch(0.17 0.015 258);
+  --color-surface-2: oklch(0.21 0.018 258);
+  --color-line: oklch(0.31 0.018 258);
+  --color-ink: oklch(0.95 0.005 250);
+  --color-muted: oklch(0.66 0.012 256);
+  --color-signal: oklch(0.8 0.12 207); /* brand cyan #22D3EE */
+  --color-signal-dim: oklch(0.62 0.1 207);
+
+  /* brand mark gradient stops — used on the logo mark ONLY */
+  --color-brand-cyan: #22d3ee;
+  --color-brand-violet: #8b5cf6;
+  --color-brand-magenta: #e879f9;
+
+  --font-sans: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.62; /* light-on-dark gets extra breathing room */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* The mono "readout" layer: labels, kickers, metadata. */
+  .label {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    color: var(--color-muted);
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-bg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
+  }
+}

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  
+  <defs>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="55%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#E879F9"/>
+    </linearGradient>
+    <linearGradient id="brandH" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="55%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#E879F9"/>
+    </linearGradient>
+    <radialGradient id="glowC" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowV" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowM" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E879F9" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#E879F9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <clipPath id="tile"><rect width="240" height="240" rx="54"/></clipPath>
+  <rect width="240" height="240" rx="54" fill="#0D1322"/>
+  <g clip-path="url(#tile)">
+    <circle cx="200" cy="36" r="130" fill="url(#glowC)"/>
+    <circle cx="40" cy="210" r="130" fill="url(#glowV)"/>
+  </g>
+  <rect x="2" y="2" width="236" height="236" rx="52" fill="none" stroke="#273249" stroke-width="3"/>
+  
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M96 76 L52 120 L96 164" stroke="url(#brand)" stroke-width="17"/>
+    <path d="M144 76 L188 120 L144 164" stroke="url(#brand)" stroke-width="17"/>
+    <line x1="101" y1="104" x2="101" y2="136" stroke="#F8FAFC" stroke-width="13"/>
+    <line x1="120" y1="86"  x2="120" y2="154" stroke="#F8FAFC" stroke-width="13"/>
+    <line x1="139" y1="104" x2="139" y2="136" stroke="#F8FAFC" stroke-width="13"/>
+  </g>
+</svg>
