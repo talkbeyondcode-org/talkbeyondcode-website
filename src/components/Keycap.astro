@@ -1,0 +1,21 @@
+---
+/* A physical keycap for the Ctrl + Shift + AI lockup. Inactive caps are
+   pale wells; the “AI” cap carries the brand gradient. */
+interface Props {
+  gradient?: boolean
+  size?: 'sm' | 'md'
+}
+const { gradient = false, size = 'md' } = Astro.props
+const dims =
+  size === 'sm'
+    ? 'h-12 w-16 text-base rounded-[11px]'
+    : 'h-16 w-[86px] text-lg rounded-[13px]'
+const surface = gradient
+  ? 'bg-gradient-to-r from-brand-cyan via-brand-violet to-brand-magenta'
+  : 'border border-line bg-panel'
+---
+<span
+  class={`inline-flex select-none items-center justify-center font-mono font-bold tracking-tight text-ink ${dims} ${surface}`}
+>
+  <slot />
+</span>

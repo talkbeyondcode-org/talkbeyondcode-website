@@ -1,0 +1,41 @@
+---
+/* The TBC mark: two brand-gradient chevrons (< >) flanking three dark
+   waveform bars. Exact vector from Figma node 166:473. `size` sets the
+   height; width follows the 152:104 aspect. `id` MUST be unique per
+   instance on a page so the <linearGradient> defs don't collide. */
+interface Props {
+  id: string
+  size?: number
+  class?: string
+}
+const { id, size = 36, class: className = '' } = Astro.props
+const width = Math.round((size * 152) / 104)
+const gl = `tbc-${id}-l`
+const gr = `tbc-${id}-r`
+---
+<svg
+  width={width}
+  height={size}
+  viewBox="0 0 152 104"
+  fill="none"
+  class={className}
+  aria-hidden="true"
+>
+  <path d="M52 8L8 52L52 96" stroke={`url(#${gl})`} stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M100 8L144 52L100 96" stroke={`url(#${gr})`} stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M56 36V68" stroke="#0B1220" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M76 18V86" stroke="#0B1220" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M96 36V68" stroke="#0B1220" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+  <defs>
+    <linearGradient id={gl} x1="8" y1="8" x2="78.4" y2="43.2" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#35C4DA" />
+      <stop offset="0.55" stop-color="#6F3FDB" />
+      <stop offset="1" stop-color="#DA4BF0" />
+    </linearGradient>
+    <linearGradient id={gr} x1="100" y1="8" x2="170.4" y2="43.2" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#35C4DA" />
+      <stop offset="0.55" stop-color="#6F3FDB" />
+      <stop offset="1" stop-color="#DA4BF0" />
+    </linearGradient>
+  </defs>
+</svg>

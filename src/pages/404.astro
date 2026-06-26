@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Kicker from '../components/Kicker.astro'
+---
+<Layout title="404 · TalkBeyondCode" description="Page not found." noindex={true}>
+  <div class="mx-auto flex max-w-6xl flex-col items-start gap-6 px-6 py-32 md:px-10">
+    <Kicker>SIGNAL LOST</Kicker>
+    <p class="font-mono text-7xl font-bold grad-text">404</p>
+    <h1 class="text-3xl font-bold tracking-tight text-ink">No trace on this channel</h1>
+    <p class="max-w-md text-muted">
+      That page doesn’t exist. It may have moved, or it never shipped.
+    </p>
+    <a
+      href="/"
+      class="rounded-full bg-primary px-6 py-3 font-mono text-[0.8rem] font-bold uppercase tracking-[0.1em] text-white transition-transform hover:-translate-y-0.5 hover:bg-primary-deep"
+    >
+      Back home →
+    </a>
+  </div>
+</Layout>

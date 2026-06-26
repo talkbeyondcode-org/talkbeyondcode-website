@@ -1,0 +1,290 @@
+---
+import Layout from '../layouts/Layout.astro'
+import SectionHead from '../components/SectionHead.astro'
+import Kicker from '../components/Kicker.astro'
+import TbcMark from '../components/TbcMark.astro'
+import Keycap from '../components/Keycap.astro'
+import Newsletter from '../components/Newsletter.astro'
+import { articles, signal, creators } from '../data'
+
+const drops = [
+  {
+    kind: 'Podcast',
+    date: 'Jun 2026',
+    keycaps: true,
+    title: 'Launching Ctrl+Shift+AI — our new podcast',
+    blurb: 'Conversations with engineers across stacks, roles and career stages on how they really use AI.',
+    cta: 'Listen',
+    to: '/podcast',
+  },
+  {
+    kind: 'Article',
+    date: 'Jun 2026',
+    title: 'Prompt-driven development: what stuck, what didn’t',
+    blurb: 'Six months of building with agents — our honest scorecard across four different stacks.',
+    cta: 'Read',
+    to: '/articles',
+  },
+  {
+    kind: 'Article',
+    date: 'May 2026',
+    title: 'We let AI write our standups for a month',
+    blurb: 'An experiment in automating the most human ritual in engineering. Results were… mixed.',
+    cta: 'Read',
+    to: '/articles',
+  },
+]
+
+const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
+---
+<Layout
+  title="TalkBeyondCode — Engineering conversations beyond the code"
+  description="Opinions, experiences, practices and learnings from four working engineers — plus honest conversations about how AI is changing the craft. Home of the Ctrl+Shift+AI podcast."
+>
+  {/* announcement bar */}
+  <div class="relative bg-lav" data-banner>
+    <a
+      href="/podcast"
+      class="block px-10 py-3.5 text-center font-mono text-[0.82rem] tracking-[0.02em] text-primary-deep transition-opacity hover:opacity-80"
+    >
+      NEW · Ctrl+Shift+AI — our podcast on how engineers ship with AI → Listen
+    </a>
+    <button
+      type="button"
+      data-banner-close
+      aria-label="Dismiss announcement"
+      class="absolute right-4 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-ink"
+    >
+      ✕
+    </button>
+  </div>
+
+  {/* hero */}
+  <section class="relative overflow-hidden">
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute -right-40 -top-40 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.18),rgba(34,211,238,0.10)_45%,transparent_70%)] blur-[10px]"
+    >
+    </div>
+    <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-[1.15fr_0.85fr] md:px-10 md:py-28">
+      <div>
+        <div data-hero><Kicker>FOUR ENGINEERS · ONE CHANNEL</Kicker></div>
+        <h1 data-hero class="mt-5 text-[clamp(2.6rem,6vw,4rem)] font-bold leading-[1.04] tracking-[-0.02em] text-ink">
+          Engineering conversations<br /><span class="grad-text">beyond the code.</span>
+        </h1>
+        <p data-hero class="mt-6 max-w-xl text-lg text-muted">
+          Opinions, experiences, practices and learnings from four working
+          engineers — plus honest conversations about how AI is changing the craft.
+        </p>
+        <div data-hero class="mt-8 flex flex-wrap items-center gap-3">
+          <a
+            href="/podcast"
+            class="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-mono text-[0.8rem] font-bold uppercase tracking-[0.1em] text-white transition-transform hover:-translate-y-0.5 hover:bg-primary-deep"
+          >
+            <span aria-hidden="true">▶</span> Listen to the podcast
+          </a>
+          <a
+            href="/articles"
+            class="inline-flex items-center rounded-full border border-line px-6 py-3 font-mono text-[0.8rem] font-bold uppercase tracking-[0.1em] text-ink transition-colors hover:border-primary hover:text-primary"
+          >
+            Read the articles
+          </a>
+        </div>
+      </div>
+
+      <div data-hero class="flex items-center justify-center gap-8 md:justify-end">
+        <TbcMark id="hero" size={168} />
+        <div class="flex items-end gap-2" aria-hidden="true">
+          {
+            waveBars.map((h) => (
+              <span
+                data-bar
+                class="w-2.5 rounded-full bg-gradient-to-b from-brand-cyan via-brand-violet to-brand-magenta"
+                style={`height:${h * 96}px`}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* fresh from the channel */}
+  <section class="mx-auto max-w-6xl px-6 py-20 md:px-10">
+    <SectionHead kicker="LATEST DROPS" title="Fresh from the channel" />
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {
+        drops.map((d) => (
+          <a
+            href={d.to}
+            class="group flex flex-col rounded-[20px] border border-line bg-bg p-7 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
+          >
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-[0.7rem] font-bold uppercase tracking-[0.2em] text-primary">{d.kind}</span>
+              <span class="font-mono text-[0.7rem] tracking-[0.12em] text-muted">{d.date}</span>
+            </div>
+            {d.keycaps && (
+              <div class="mt-6 flex gap-2.5">
+                <Keycap size="sm">Ctrl</Keycap>
+                <Keycap size="sm">Shift</Keycap>
+                <Keycap size="sm" gradient>AI</Keycap>
+              </div>
+            )}
+            <h3 class="mt-6 text-xl font-bold leading-snug tracking-tight text-ink">{d.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">{d.blurb}</p>
+            <span class="mt-auto pt-6 font-mono text-sm font-medium tracking-[0.05em] text-primary transition-transform group-hover:translate-x-1">
+              {d.cta} →
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* podcast band */}
+  <section class="border-y border-line bg-surface">
+    <div class="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-[0.9fr_1.1fr] md:px-10">
+      <div class="rounded-[24px] border border-line bg-bg p-10 text-center shadow-[var(--shadow-card)]">
+        <div class="mb-6 flex justify-center"><TbcMark id="band" size={48} /></div>
+        <div class="flex items-center justify-center gap-2.5">
+          <Keycap size="sm">Ctrl</Keycap>
+          <Keycap size="sm">Shift</Keycap>
+          <Keycap size="sm" gradient>AI</Keycap>
+        </div>
+        <p class="mt-6 font-display text-xl font-bold text-ink">Ctrl+Shift+AI</p>
+        <p class="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-muted">how real engineers ship with AI</p>
+      </div>
+
+      <div>
+        <Kicker>THE PODCAST</Kicker>
+        <h2 class="mt-3 text-[clamp(2rem,4.5vw,3rem)] font-bold tracking-tight text-ink">Ctrl+Shift+AI</h2>
+        <p class="mt-4 max-w-md text-muted">
+          Every week we sit down with an engineer — junior to staff+, any stack —
+          and unpack exactly how AI fits into their real workflow. No hype, just practice.
+        </p>
+        <p class="mt-5 font-mono text-xs uppercase tracking-[0.12em] text-muted">
+          Spotify · Apple Podcasts · YouTube · RSS
+        </p>
+        <div class="mt-7 flex flex-wrap items-center gap-4">
+          <a
+            href="/podcast"
+            class="inline-flex items-center rounded-full bg-primary px-6 py-3 font-mono text-[0.8rem] font-bold uppercase tracking-[0.1em] text-white transition-transform hover:-translate-y-0.5 hover:bg-primary-deep"
+          >
+            Browse episodes →
+          </a>
+          <span class="font-mono text-xs tracking-[0.08em] text-muted">new episodes weekly</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* from the blog */}
+  <section class="mx-auto max-w-6xl px-6 py-20 md:px-10">
+    <SectionHead kicker="WRITING" title="From the blog" href="/articles" hrefLabel="All articles" />
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {
+        articles.slice(0, 3).map((a) => (
+          <a
+            href="/articles"
+            class="group flex flex-col overflow-hidden rounded-[20px] border border-line bg-bg shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
+          >
+            <div class="flex h-36 items-center justify-center bg-lav font-mono text-2xl font-bold text-primary/70">&lt;/&gt;</div>
+            <div class="flex flex-1 flex-col p-6">
+              <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.2em] text-primary">{a.category}</span>
+              <h3 class="mt-3 text-lg font-bold leading-snug tracking-tight text-ink">{a.title}</h3>
+              <span class="mt-auto pt-6 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-muted">
+                {a.author} · {a.read}
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* four engineers */}
+  <section class="border-t border-line bg-surface">
+    <div class="mx-auto max-w-6xl px-6 py-20 md:px-10">
+      <SectionHead kicker="THE HUMANS" title="Four engineers, one mic" href="/creators" hrefLabel="Meet the creators" />
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          creators.map((c) => (
+            <div class="rounded-[20px] border border-line bg-bg p-6 text-center shadow-[var(--shadow-card)]">
+              <img
+                src={c.photo}
+                alt={c.name}
+                loading="lazy"
+                width="64"
+                height="64"
+                class="mx-auto h-16 w-16 rounded-full border border-line object-cover"
+              />
+              <h3 class="mt-4 font-bold tracking-tight text-ink">{c.name}</h3>
+              <p class="mt-1 text-sm text-muted">{c.focus}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* what we're tracking */}
+  <section class="mx-auto max-w-6xl px-6 py-20 md:px-10">
+    <SectionHead kicker="SIGNAL" title="What we’re tracking" href="/signal" hrefLabel="All signal" />
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {
+        signal.slice(0, 3).map((s) => (
+          <a
+            href="/signal"
+            class="flex flex-col rounded-[20px] border border-line bg-bg p-6 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
+          >
+            <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.18em] text-primary">
+              {s.kind} · {s.tag}
+            </span>
+            <h3 class="mt-3 text-base font-bold leading-snug tracking-tight text-ink">{s.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
+            {s.source && <span class="mt-auto pt-5 font-mono text-xs text-primary">{s.source.label} →</span>}
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* newsletter */}
+  <section class="mx-auto max-w-6xl px-6 pb-24 md:px-10">
+    <Newsletter />
+  </section>
+</Layout>
+
+<script>
+  import gsap from 'gsap'
+
+  function initHome() {
+    // dismissible announcement
+    const close = document.querySelector('[data-banner-close]')
+    close?.addEventListener('click', () => document.querySelector('[data-banner]')?.remove())
+
+    if (!document.querySelector('[data-hero]')) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
+
+    gsap.from('[data-hero]', {
+      y: 22,
+      opacity: 0,
+      duration: 1,
+      ease: 'expo.out',
+      stagger: 0.08,
+      delay: 0.05,
+    })
+    gsap.to('[data-bar]', {
+      scaleY: 0.35,
+      transformOrigin: 'center',
+      duration: 0.9,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true,
+      stagger: { each: 0.12, from: 'center' },
+    })
+  }
+
+  document.addEventListener('astro:page-load', initHome)
+</script>

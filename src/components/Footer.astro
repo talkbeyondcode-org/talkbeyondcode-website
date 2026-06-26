@@ -1,0 +1,89 @@
+---
+import TbcMark from './TbcMark.astro'
+import Wordmark from './Wordmark.astro'
+import { CONTACT_EMAIL } from '../data'
+
+const pages = [
+  { label: 'Home', to: '/' },
+  { label: 'Creators', to: '/creators' },
+  { label: 'Podcast', to: '/podcast' },
+  { label: 'Articles', to: '/articles' },
+  { label: 'Signal', to: '/signal' },
+]
+
+const social = [
+  { label: 'YouTube', href: 'https://www.youtube.com/@TalkBeyondCode' },
+  { label: 'Instagram', href: 'https://instagram.com' },
+  { label: 'X', href: 'https://x.com' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/talkbeyondcode' },
+]
+---
+<footer class="mt-auto border-t border-line bg-surface">
+  <div class="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-[1.6fr_1fr_1fr_1.1fr] md:px-10">
+    <div>
+      <span class="flex items-center gap-2.5">
+        <TbcMark id="footer" size={40} />
+        <Wordmark />
+      </span>
+      <p class="mt-4 max-w-xs text-sm text-muted">
+        opinions · experiences · practices — beyond the code
+      </p>
+    </div>
+
+    <nav aria-label="Pages">
+      <h2 class="label">Pages</h2>
+      <ul class="mt-4 space-y-2.5">
+        {
+          pages.map((l) => (
+            <li>
+              <a href={l.to} class="text-sm text-ink transition-colors hover:text-primary">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav aria-label="Social">
+      <h2 class="label">Social</h2>
+      <ul class="mt-4 space-y-2.5">
+        {
+          social.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                class="text-sm text-ink transition-colors hover:text-primary"
+              >
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="label">Contact</h2>
+      <a
+        href={`mailto:${CONTACT_EMAIL}`}
+        class="mt-4 block text-sm text-ink transition-colors hover:text-primary"
+      >
+        {CONTACT_EMAIL}
+      </a>
+    </div>
+  </div>
+
+  <div class="border-t border-line">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 md:px-10">
+      <span class="label normal-case tracking-[0.05em]">
+        © 2026 TalkBeyondCode · Ctrl+Shift+AI
+      </span>
+      <span class="label hidden normal-case tracking-[0.05em] sm:block">
+        beyond the code
+      </span>
+    </div>
+  </div>
+</footer>
