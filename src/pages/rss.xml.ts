@@ -7,7 +7,7 @@ export function GET(context: APIContext) {
 
   const items = [
     ...episodes.map((e) => ({
-      title: `Ctrl+Shift+AI — ${e.title}`,
+      title: `Ctrl+Shift+AI: ${e.title}`,
       description: e.meta,
       link: new URL('/podcast', site).href,
     })),
@@ -21,7 +21,7 @@ export function GET(context: APIContext) {
   return rss({
     title: 'TalkBeyondCode',
     description:
-      'Engineer-to-engineer conversations on software, AI adoption and the craft — episodes, articles and signal from four working engineers.',
+      'Engineer-to-engineer conversations on software and AI adoption. Episodes, articles and signal from four working engineers.',
     site,
     items,
   })

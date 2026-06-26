@@ -12,7 +12,7 @@ const drops = [
     kind: 'Podcast',
     date: 'Jun 2026',
     keycaps: true,
-    title: 'Launching Ctrl+Shift+AI — our new podcast',
+    title: 'Launching Ctrl+Shift+AI, our new podcast',
     blurb: 'Conversations with engineers across stacks, roles and career stages on how they really use AI.',
     cta: 'Listen',
     to: '/podcast',
@@ -21,7 +21,7 @@ const drops = [
     kind: 'Article',
     date: 'Jun 2026',
     title: 'Prompt-driven development: what stuck, what didn’t',
-    blurb: 'Six months of building with agents — our honest scorecard across four different stacks.',
+    blurb: 'Six months of building with agents, scored honestly across four different stacks.',
     cta: 'Read',
     to: '/articles',
   },
@@ -38,8 +38,8 @@ const drops = [
 const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
 ---
 <Layout
-  title="TalkBeyondCode — Engineering conversations beyond the code"
-  description="Opinions, experiences, practices and learnings from four working engineers — plus honest conversations about how AI is changing the craft. Home of the Ctrl+Shift+AI podcast."
+  title="TalkBeyondCode: Engineering conversations beyond the code"
+  description="Four working engineers on what we’re building and breaking, plus honest conversations about how AI is changing the way we ship. Home of the Ctrl+Shift+AI podcast."
 >
   {/* announcement bar */}
   <div class="relative bg-lav" data-banner>
@@ -47,7 +47,7 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
       href="/podcast"
       class="block px-10 py-3.5 text-center font-mono text-[0.82rem] tracking-[0.02em] text-primary-deep transition-opacity hover:opacity-80"
     >
-      NEW · Ctrl+Shift+AI — our podcast on how engineers ship with AI → Listen
+      NEW · Ctrl+Shift+AI: our podcast on how engineers ship with AI → Listen
     </a>
     <button
       type="button"
@@ -73,8 +73,8 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
           Engineering conversations<br /><span class="grad-text">beyond the code.</span>
         </h1>
         <p data-hero class="mt-6 max-w-xl text-lg text-muted">
-          Opinions, experiences, practices and learnings from four working
-          engineers — plus honest conversations about how AI is changing the craft.
+          Four working engineers on what we’re building and breaking, plus honest
+          conversations about how AI is changing the way we ship.
         </p>
         <div data-hero class="mt-8 flex flex-wrap items-center gap-3">
           <a
@@ -159,11 +159,12 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
         <Kicker>THE PODCAST</Kicker>
         <h2 class="mt-3 text-[clamp(2rem,4.5vw,3rem)] font-bold tracking-tight text-ink">Ctrl+Shift+AI</h2>
         <p class="mt-4 max-w-md text-muted">
-          Every week we sit down with an engineer — junior to staff+, any stack —
-          and unpack exactly how AI fits into their real workflow. No hype, just practice.
+          Every week we sit down with one engineer, anywhere from junior to staff-plus
+          and on any stack, and get into how AI actually fits their real workflow. We skip
+          the hype and ask what they really do.
         </p>
         <p class="mt-5 font-mono text-xs uppercase tracking-[0.12em] text-muted">
-          Spotify · Apple Podcasts · YouTube · RSS
+          Watch every episode on YouTube
         </p>
         <div class="mt-7 flex flex-wrap items-center gap-4">
           <a
@@ -180,7 +181,7 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
 
   {/* from the blog */}
   <section class="mx-auto max-w-6xl px-6 py-20 md:px-10">
-    <SectionHead kicker="WRITING" title="From the blog" href="/articles" hrefLabel="All articles" />
+    <SectionHead kicker="WRITING" title="Latest writing" href="/articles" hrefLabel="All articles" />
     <div class="mt-10 grid gap-6 md:grid-cols-3">
       {
         articles.slice(0, 3).map((a) => (

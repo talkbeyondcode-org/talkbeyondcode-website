@@ -5,13 +5,13 @@ import { signal, signalFilters } from '../data'
 ---
 <Layout
   title="Signal · TalkBeyondCode"
-  description="What the channel is tracking — links worth your time and short notes on what we’re building, reading and arguing about this week."
+  description="What the channel is tracking: links worth your time and short notes on what we’re building, reading and arguing about this week."
 >
   <div class="mx-auto max-w-4xl px-6 py-16 md:px-10 md:py-20">
     <PageHeader
       kicker="SIGNAL"
       title="What the channel is tracking"
-      intro="Not blog posts, not hot takes from one of us — Signal is the whole channel thinking out loud. Links worth your time and short notes on what we’re building, reading and arguing about this week."
+      intro="Not blog posts, and not one person’s hot takes. Signal is the whole channel thinking out loud: links worth your time and short notes on what we’re building, reading and arguing about this week."
     />
 
     <div class="mt-8 flex flex-wrap gap-2.5" data-filters>
@@ -55,7 +55,7 @@ import { signal, signalFilters } from '../data'
                   {item.source.label} →
                 </a>
               ) : (
-                <p class="mt-3 font-mono text-xs text-muted">— from the channel</p>
+                <p class="mt-3 font-mono text-xs text-muted">From the channel</p>
               )
             }
           </li>

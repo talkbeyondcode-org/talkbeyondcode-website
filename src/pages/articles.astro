@@ -3,16 +3,35 @@ import Layout from '../layouts/Layout.astro'
 import PageHeader from '../components/PageHeader.astro'
 import Newsletter from '../components/Newsletter.astro'
 import { articles, articleCategories, featuredArticle } from '../data'
+
+const SITE = 'https://talkbeyondcode.com'
+const schema = [
+  {
+    '@type': 'Blog',
+    '@id': `${SITE}/articles#blog`,
+    name: 'TalkBeyondCode Articles',
+    url: `${SITE}/articles`,
+    publisher: { '@id': `${SITE}/#organization` },
+    blogPost: [featuredArticle, ...articles].map((a) => ({
+      '@type': 'BlogPosting',
+      headline: a.title,
+      description: a.excerpt,
+      articleSection: a.category,
+      author: { '@id': `${SITE}/#organization` },
+    })),
+  },
+]
 ---
 <Layout
   title="Articles · TalkBeyondCode"
-  description="Long-form from four working engineers — what we’re building, breaking and rethinking as AI reshapes the day-to-day."
+  description="Long-form writing from four working engineers on what we’re building, breaking and rethinking as AI reshapes the day-to-day."
+  schema={schema}
 >
   <div class="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
     <PageHeader
       kicker="WRITING"
       title="Notes beyond the code"
-      intro="Long-form from the four of us — what we’re building, breaking and rethinking as AI reshapes the day-to-day."
+      intro="Long-form writing from the four of us on what we’re building, breaking and rethinking as AI reshapes the day-to-day."
     />
 
     {/* filters */}

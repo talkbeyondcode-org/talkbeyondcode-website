@@ -1,48 +1,83 @@
 ---
-/* Per-page <head>: title, description, canonical, Open Graph / Twitter,
-   and site-level JSON-LD. Driven by props from each page via Layout. */
+/* Per-page <head>: title, description, canonical, Open Graph / Twitter, a
+   default auto-generated OG image, and the JSON-LD graph. Site-level nodes
+   (Organization, WebSite, BreadcrumbList) are built here; pages pass extra
+   nodes (Article, PodcastSeries, Person, FAQPage) via the `schema` prop. */
+import { SITE_NAME } from '../lib/content'
+
 interface Props {
   title: string
   description?: string
   noindex?: boolean
   ogImage?: string
+  ogType?: 'website' | 'article'
+  schema?: Record<string, unknown>[]
 }
 
 const {
   title,
-  description = 'TalkBeyondCode — engineer-to-engineer conversations on software engineering, AI adoption, leadership and architecture. Home of the Ctrl+Shift+AI podcast.',
+  description = 'TalkBeyondCode is a media channel run by four working engineers. Home of the Ctrl+Shift+AI podcast on how engineers actually use AI in their day-to-day work.',
   noindex = false,
   ogImage,
+  ogType = 'website',
+  schema = [],
 } = Astro.props
 
 const site = Astro.site ?? new URL('https://talkbeyondcode.com')
-const canonical = new URL(Astro.url.pathname, site)
-const ogImageUrl = ogImage ? new URL(ogImage, site) : undefined
-const SITE_NAME = 'TalkBeyondCode'
+const path = Astro.url.pathname
+const canonical = new URL(path, site)
+const cleanPath = path.replace(/\/$/, '') || '/'
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${site.origin}/#organization`,
-      name: SITE_NAME,
-      url: site.origin,
-      logo: new URL('/favicon.svg', site).href,
-      sameAs: [
-        'https://www.youtube.com/@TalkBeyondCode',
-        'https://www.linkedin.com/company/talkbeyondcode',
-      ],
-    },
-    {
-      '@type': 'WebSite',
-      '@id': `${site.origin}/#website`,
-      name: SITE_NAME,
-      url: site.origin,
-      publisher: { '@id': `${site.origin}/#organization` },
-    },
-  ],
+/* Default OG image: the build-time card for this page. */
+const OG_KEYS: Record<string, string> = {
+  '/': 'index',
+  '/podcast': 'podcast',
+  '/articles': 'articles',
+  '/signal': 'signal',
+  '/creators': 'creators',
 }
+const ogKey = OG_KEYS[cleanPath] ?? 'index'
+const ogImageUrl = new URL(ogImage ?? `/og/${ogKey}.png`, site)
+
+const NAV_LABELS: Record<string, string> = {
+  '/podcast': 'Podcast',
+  '/articles': 'Articles',
+  '/signal': 'Signal',
+  '/creators': 'Creators',
+}
+
+const graph: Record<string, unknown>[] = [
+  {
+    '@type': 'Organization',
+    '@id': `${site.origin}/#organization`,
+    name: SITE_NAME,
+    url: site.origin,
+    logo: new URL('/favicon.svg', site).href,
+    sameAs: [
+      'https://www.youtube.com/@TalkBeyondCode',
+      'https://www.linkedin.com/company/talkbeyondcode',
+    ],
+  },
+  {
+    '@type': 'WebSite',
+    '@id': `${site.origin}/#website`,
+    name: SITE_NAME,
+    url: site.origin,
+    publisher: { '@id': `${site.origin}/#organization` },
+  },
+]
+
+if (cleanPath !== '/' && NAV_LABELS[cleanPath]) {
+  graph.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.origin}/` },
+      { '@type': 'ListItem', position: 2, name: NAV_LABELS[cleanPath], item: canonical.href },
+    ],
+  })
+}
+
+const jsonLd = { '@context': 'https://schema.org', '@graph': [...graph, ...schema] }
 ---
 
 <meta charset="UTF-8" />
@@ -57,20 +92,23 @@ const jsonLd = {
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 
 {/* Open Graph */}
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:site_name" content={SITE_NAME} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
-{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 
 {/* Twitter */}
-<meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-{ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+<meta name="twitter:image" content={ogImageUrl} />
 
 <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 <link rel="alternate" type="application/rss+xml" title="TalkBeyondCode" href="/rss.xml" />
+<link rel="alternate" type="text/markdown" title="Markdown (for AI agents)" href="/llms.txt" />
 
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
