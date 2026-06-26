@@ -68,16 +68,6 @@ import { signal, signalFilters } from '../data'
 <script>
   const ACTIVE = ['border-primary', 'bg-primary', 'text-white']
   const IDLE = ['border-line', 'bg-bg', 'text-muted', 'hover:border-primary', 'hover:text-primary']
-  const chips = [...document.querySelectorAll<HTMLButtonElement>('.filter-chip')]
-  const items = [...document.querySelectorAll<HTMLElement>('[data-kind]')]
-
-  function setActive(chip: HTMLButtonElement) {
-    chips.forEach((c) => {
-      const on = c === chip
-      ;(on ? ACTIVE : IDLE).forEach((cls) => c.classList.add(cls))
-      ;(on ? IDLE : ACTIVE).forEach((cls) => c.classList.remove(cls))
-    })
-  }
 
   function matches(el: HTMLElement, filter: string) {
     if (filter === 'All') return true
@@ -86,13 +76,29 @@ import { signal, signalFilters } from '../data'
     return (el.dataset.tag || '').toLowerCase().includes(filter.toLowerCase())
   }
 
-  chips.forEach((chip) =>
-    chip.addEventListener('click', () => {
-      setActive(chip)
-      const f = chip.dataset.filter || 'All'
-      items.forEach((el) => el.toggleAttribute('hidden', !matches(el, f)))
-    }),
-  )
+  function initSignalFilters() {
+    const chips = [...document.querySelectorAll<HTMLButtonElement>('.filter-chip')]
+    const items = [...document.querySelectorAll<HTMLElement>('[data-kind]')]
+    if (!chips.length) return
 
-  if (chips[0]) setActive(chips[0])
+    function setActive(chip: HTMLButtonElement) {
+      chips.forEach((c) => {
+        const on = c === chip
+        ;(on ? ACTIVE : IDLE).forEach((cls) => c.classList.add(cls))
+        ;(on ? IDLE : ACTIVE).forEach((cls) => c.classList.remove(cls))
+      })
+    }
+
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        setActive(chip)
+        const f = chip.dataset.filter || 'All'
+        items.forEach((el) => el.toggleAttribute('hidden', !matches(el, f)))
+      }),
+    )
+
+    setActive(chips[0])
+  }
+
+  document.addEventListener('astro:page-load', initSignalFilters)
 </script>

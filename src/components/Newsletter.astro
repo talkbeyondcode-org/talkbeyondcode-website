@@ -28,9 +28,13 @@
 </div>
 
 <script>
-  const SUBSCRIBE_URL = 'https://www.youtube.com/@TalkBeyondCode'
-  document.querySelector('[data-newsletter]')?.addEventListener('submit', (e) => {
-    e.preventDefault()
-    window.open(SUBSCRIBE_URL, '_blank', 'noreferrer')
-  })
+  function initNewsletter() {
+    const form = document.querySelector('[data-newsletter]')
+    if (!form) return
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      window.open('https://www.youtube.com/@TalkBeyondCode', '_blank', 'noreferrer')
+    })
+  }
+  document.addEventListener('astro:page-load', initNewsletter)
 </script>

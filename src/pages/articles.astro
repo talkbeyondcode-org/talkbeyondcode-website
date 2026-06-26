@@ -81,35 +81,37 @@ import { articles, articleCategories, featuredArticle } from '../data'
 <script>
   const ACTIVE = ['border-primary', 'bg-primary', 'text-white']
   const IDLE = ['border-line', 'bg-bg', 'text-muted', 'hover:border-primary', 'hover:text-primary']
-  const chips = [...document.querySelectorAll<HTMLButtonElement>('.filter-chip')]
-  const cards = [...document.querySelectorAll<HTMLElement>('[data-category]')]
 
-  function setActive(chip: HTMLButtonElement) {
-    chips.forEach((c) => {
-      const on = c === chip
-      c.classList.toggle('is-active', on)
-      ;(on ? ACTIVE : IDLE).forEach((cls) => c.classList.add(cls))
-      ;(on ? IDLE : ACTIVE).forEach((cls) => c.classList.remove(cls))
-    })
-  }
+  function initArticleFilters() {
+    const chips = [...document.querySelectorAll<HTMLButtonElement>('.filter-chip')]
+    const cards = [...document.querySelectorAll<HTMLElement>('[data-category]')]
+    if (!chips.length) return
 
-  function applyFilter(filter: string) {
-    cards.forEach((card) => {
-      const show = filter === 'All' || card.dataset.category === filter
-      card.toggleAttribute('hidden', !show)
-    })
-  }
+    function setActive(chip: HTMLButtonElement) {
+      chips.forEach((c) => {
+        const on = c === chip
+        ;(on ? ACTIVE : IDLE).forEach((cls) => c.classList.add(cls))
+        ;(on ? IDLE : ACTIVE).forEach((cls) => c.classList.remove(cls))
+      })
+    }
 
-  chips.forEach((chip) =>
-    chip.addEventListener('click', () => {
-      setActive(chip)
-      applyFilter(chip.dataset.filter || 'All')
-    }),
-  )
+    function applyFilter(filter: string) {
+      cards.forEach((card) => {
+        const show = filter === 'All' || card.dataset.category === filter
+        card.toggleAttribute('hidden', !show)
+      })
+    }
 
-  // default: "All" active
-  if (chips[0]) {
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        setActive(chip)
+        applyFilter(chip.dataset.filter || 'All')
+      }),
+    )
+
     setActive(chips[0])
     applyFilter('All')
   }
+
+  document.addEventListener('astro:page-load', initArticleFilters)
 </script>

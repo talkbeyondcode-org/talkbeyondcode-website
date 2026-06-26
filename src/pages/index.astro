@@ -258,13 +258,15 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
 <script>
   import gsap from 'gsap'
 
-  // dismissible announcement
-  document.querySelector('[data-banner-close]')?.addEventListener('click', () => {
-    document.querySelector('[data-banner]')?.remove()
-  })
+  function initHome() {
+    // dismissible announcement
+    const close = document.querySelector('[data-banner-close]')
+    close?.addEventListener('click', () => document.querySelector('[data-banner]')?.remove())
 
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (!reduce) {
+    if (!document.querySelector('[data-hero]')) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
+
     gsap.from('[data-hero]', {
       y: 22,
       opacity: 0,
@@ -283,4 +285,6 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
       stagger: { each: 0.12, from: 'center' },
     })
   }
+
+  document.addEventListener('astro:page-load', initHome)
 </script>

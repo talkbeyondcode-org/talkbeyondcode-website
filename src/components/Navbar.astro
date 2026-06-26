@@ -87,20 +87,24 @@ const isActive = (to: string) => path === to || path === `${to}/`
 </header>
 
 <script>
-  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]')
-  const menu = document.querySelector<HTMLElement>('[data-menu]')
-  toggle?.addEventListener('click', () => {
-    const open = menu?.hasAttribute('hidden')
-    if (open) {
-      menu?.removeAttribute('hidden')
-      toggle.setAttribute('aria-expanded', 'true')
-      toggle.setAttribute('aria-label', 'Close menu')
-      toggle.textContent = '[ close ]'
-    } else {
-      menu?.setAttribute('hidden', '')
-      toggle.setAttribute('aria-expanded', 'false')
-      toggle.setAttribute('aria-label', 'Open menu')
-      toggle.textContent = '[ menu ]'
-    }
-  })
+  function initNav() {
+    const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]')
+    const menu = document.querySelector<HTMLElement>('[data-menu]')
+    if (!toggle || !menu) return
+    toggle.addEventListener('click', () => {
+      const open = menu.hasAttribute('hidden')
+      if (open) {
+        menu.removeAttribute('hidden')
+        toggle.setAttribute('aria-expanded', 'true')
+        toggle.setAttribute('aria-label', 'Close menu')
+        toggle.textContent = '[ close ]'
+      } else {
+        menu.setAttribute('hidden', '')
+        toggle.setAttribute('aria-expanded', 'false')
+        toggle.setAttribute('aria-label', 'Open menu')
+        toggle.textContent = '[ menu ]'
+      }
+    })
+  }
+  document.addEventListener('astro:page-load', initNav)
 </script>
