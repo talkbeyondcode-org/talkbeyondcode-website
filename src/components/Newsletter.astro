@@ -1,0 +1,36 @@
+---
+/* Email capture band. No list backend yet, so submit points subscribers at
+   the channel; the form is here so wiring a provider later is trivial. */
+---
+<div class="rounded-[24px] border border-line bg-surface px-6 py-12 text-center md:px-12 md:py-14">
+  <h2 class="text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-tight text-ink">
+    Get the drops in your inbox
+  </h2>
+  <p class="mx-auto mt-2 max-w-md text-muted">
+    One email when something new ships. No noise.
+  </p>
+  <form data-newsletter class="mx-auto mt-7 flex max-w-md flex-col gap-3 sm:flex-row">
+    <label for="news-email" class="sr-only">Email address</label>
+    <input
+      id="news-email"
+      type="email"
+      required
+      placeholder="you@work.dev"
+      class="min-w-0 flex-1 rounded-full border border-line bg-bg px-5 py-3 text-sm text-ink placeholder:text-muted/70 focus:border-primary focus:outline-none"
+    />
+    <button
+      type="submit"
+      class="shrink-0 rounded-full bg-primary px-7 py-3 font-mono text-[0.8rem] font-bold uppercase tracking-[0.1em] text-white transition-transform hover:-translate-y-0.5 hover:bg-primary-deep"
+    >
+      Subscribe
+    </button>
+  </form>
+</div>
+
+<script>
+  const SUBSCRIBE_URL = 'https://www.youtube.com/@TalkBeyondCode'
+  document.querySelector('[data-newsletter]')?.addEventListener('submit', (e) => {
+    e.preventDefault()
+    window.open(SUBSCRIBE_URL, '_blank', 'noreferrer')
+  })
+</script>

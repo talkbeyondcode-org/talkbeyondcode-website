@@ -1,0 +1,98 @@
+---
+import Layout from '../layouts/Layout.astro'
+import PageHeader from '../components/PageHeader.astro'
+import { signal, signalFilters } from '../data'
+---
+<Layout
+  title="Signal · TalkBeyondCode"
+  description="What the channel is tracking — links worth your time and short notes on what we’re building, reading and arguing about this week."
+>
+  <div class="mx-auto max-w-4xl px-6 py-16 md:px-10 md:py-20">
+    <PageHeader
+      kicker="SIGNAL"
+      title="What the channel is tracking"
+      intro="Not blog posts, not hot takes from one of us — Signal is the whole channel thinking out loud. Links worth your time and short notes on what we’re building, reading and arguing about this week."
+    />
+
+    <div class="mt-8 flex flex-wrap gap-2.5" data-filters>
+      {
+        signalFilters.map((f) => (
+          <button
+            type="button"
+            data-filter={f}
+            class="filter-chip rounded-full border px-4 py-1.5 font-mono text-xs tracking-[0.06em] transition-colors"
+          >
+            {f}
+          </button>
+        ))
+      }
+    </div>
+
+    <ul class="mt-10 space-y-4">
+      {
+        signal.map((item) => (
+          <li
+            data-kind={item.kind}
+            data-tag={item.tag}
+            class="rounded-[16px] border border-line bg-bg px-6 py-5 shadow-[var(--shadow-card)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-card-hover)]"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.18em] text-primary">
+                {item.kind} · {item.tag}
+              </span>
+              <span class="shrink-0 font-mono text-[0.65rem] tracking-[0.1em] text-muted">{item.date}</span>
+            </div>
+            <h3 class="mt-2.5 text-base font-bold leading-snug tracking-tight text-ink md:text-lg">{item.title}</h3>
+            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted">{item.body}</p>
+            {
+              item.source ? (
+                <a
+                  href={item.source.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="mt-3 inline-block font-mono text-xs font-medium text-primary transition-colors hover:text-primary-deep"
+                >
+                  {item.source.label} →
+                </a>
+              ) : (
+                <p class="mt-3 font-mono text-xs text-muted">— from the channel</p>
+              )
+            }
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Layout>
+
+<script>
+  const ACTIVE = ['border-primary', 'bg-primary', 'text-white']
+  const IDLE = ['border-line', 'bg-bg', 'text-muted', 'hover:border-primary', 'hover:text-primary']
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.filter-chip')]
+  const items = [...document.querySelectorAll<HTMLElement>('[data-kind]')]
+
+  function setActive(chip: HTMLButtonElement) {
+    chips.forEach((c) => {
+      const on = c === chip
+      ;(on ? ACTIVE : IDLE).forEach((cls) => c.classList.add(cls))
+      ;(on ? IDLE : ACTIVE).forEach((cls) => c.classList.remove(cls))
+    })
+  }
+
+  function matches(el: HTMLElement, filter: string) {
+    if (filter === 'All') return true
+    if (filter === 'Links') return el.dataset.kind === 'Link'
+    if (filter === 'Notes') return el.dataset.kind === 'Note'
+    return (el.dataset.tag || '').toLowerCase().includes(filter.toLowerCase())
+  }
+
+  chips.forEach((chip) =>
+    chip.addEventListener('click', () => {
+      setActive(chip)
+      const f = chip.dataset.filter || 'All'
+      items.forEach((el) => el.toggleAttribute('hidden', !matches(el, f)))
+    }),
+  )
+
+  if (chips[0]) setActive(chips[0])
+</script>

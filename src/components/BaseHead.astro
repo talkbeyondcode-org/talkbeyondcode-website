@@ -1,0 +1,76 @@
+---
+/* Per-page <head>: title, description, canonical, Open Graph / Twitter,
+   and site-level JSON-LD. Driven by props from each page via Layout. */
+interface Props {
+  title: string
+  description?: string
+  noindex?: boolean
+  ogImage?: string
+}
+
+const {
+  title,
+  description = 'TalkBeyondCode — engineer-to-engineer conversations on software engineering, AI adoption, leadership and architecture. Home of the Ctrl+Shift+AI podcast.',
+  noindex = false,
+  ogImage,
+} = Astro.props
+
+const site = Astro.site ?? new URL('https://talkbeyondcode.com')
+const canonical = new URL(Astro.url.pathname, site)
+const ogImageUrl = ogImage ? new URL(ogImage, site) : undefined
+const SITE_NAME = 'TalkBeyondCode'
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${site.origin}/#organization`,
+      name: SITE_NAME,
+      url: site.origin,
+      logo: new URL('/favicon.svg', site).href,
+      sameAs: [
+        'https://www.youtube.com/@TalkBeyondCode',
+        'https://www.linkedin.com/company/talkbeyondcode',
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${site.origin}/#website`,
+      name: SITE_NAME,
+      url: site.origin,
+      publisher: { '@id': `${site.origin}/#organization` },
+    },
+  ],
+}
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="theme-color" content="#7c3aed" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+{/* Open Graph */}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+
+{/* Twitter */}
+<meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+<link rel="alternate" type="application/rss+xml" title="TalkBeyondCode" href="/rss.xml" />
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />

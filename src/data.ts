@@ -1,5 +1,3 @@
-import { sagar, vivek, gayathri, ravi } from './assets/creators'
-
 export const YOUTUBE_URL = 'https://www.youtube.com/@TalkBeyondCode'
 export const WATCH_EP1_URL = 'https://youtu.be/wDLA1Qlw_Ds'
 export const CONTACT_EMAIL = 'talkbeyondcode@gmail.com'
@@ -26,7 +24,7 @@ export const creators: Creator[] = [
     bio: 'Builds product end-to-end and has opinions about every layer. Leads developer experience through WaveMaker’s shift to AI-native, agentic development.',
     stack: ['TypeScript', 'React', 'Node', 'LLM tooling'],
     talks: ['AI workflows', 'DX', 'Architecture'],
-    photo: sagar,
+    photo: '/creators/sagar.jpg',
     linkedin: 'https://www.linkedin.com/in/sagar-vemala/',
   },
   {
@@ -37,7 +35,7 @@ export const creators: Creator[] = [
     bio: 'Went from application developer to AI engineer during the LLM wave. Ships LLM apps, RAG systems and MCP-based tooling in production.',
     stack: ['Python', 'LLMs', 'RAG', 'MCP'],
     talks: ['Applied AI', 'Agents', 'Career change'],
-    photo: vivek,
+    photo: '/creators/vivek.jpg',
     linkedin: 'https://www.linkedin.com/in/vr384/',
   },
   {
@@ -48,7 +46,7 @@ export const creators: Creator[] = [
     bio: 'Keeps the platform honest. Cares about reliability, the boring infrastructure that never gets demoed, and where AI actually helps in ops.',
     stack: ['Kubernetes', 'Docker', 'CI/CD', 'AWS'],
     talks: ['Platform eng', 'Reliability', 'AI ops'],
-    photo: gayathri,
+    photo: '/creators/gayathri.jpg',
     linkedin: 'https://www.linkedin.com/in/tejaswini-k-093954182/',
   },
   {
@@ -59,7 +57,7 @@ export const creators: Creator[] = [
     bio: 'Turns research-shaped ideas into things that survive real traffic. Builds CI/CD, cloud infra and agentic AI platforms with MCP, LangGraph and full-stack observability.',
     stack: ['AWS', 'Kubernetes', 'Terraform', 'Agentic AI'],
     talks: ['Platform eng', 'AI ops', 'Production AI'],
-    photo: ravi,
+    photo: '/creators/ravi.jpg',
     linkedin: 'https://www.linkedin.com/in/seelam-raviteja-6ba017209/',
   },
 ]
