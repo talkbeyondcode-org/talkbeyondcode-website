@@ -101,72 +101,10 @@ export const episodes: Episode[] = [
   },
 ]
 
-/* ── Articles ────────────────────────────────────────────────────────── */
-export type Article = {
-  category: string
-  title: string
-  excerpt: string
-  author: string
-  read: string
-  date?: string
-}
-
+/* ── Articles ────────────────────────────────────────────────────────────
+   Article content now lives as Markdown in src/content/articles/*.md
+   (Astro Content Collections). Only the filter categories stay here. */
 export const articleCategories = ['All', 'AI in practice', 'Engineering culture', 'Career', 'Tooling']
-
-export const featuredArticle: Article = {
-  category: 'AI in practice',
-  title: 'Six months of prompt-driven development: our honest scorecard',
-  excerpt:
-    'Four engineers, four stacks, one rule: reach for the agent first. What sped up, what broke, and the practices we kept after the experiment ended.',
-  author: 'Sagar Vemala',
-  read: '12 min read',
-  date: 'Jun 2026',
-}
-
-export const articles: Article[] = [
-  {
-    category: 'AI in practice',
-    title: 'Code review in the age of agents',
-    excerpt: 'Who owns the diff when the first draft was written by a model? Our review rules, rewritten.',
-    author: 'By one of us',
-    read: '9 min read',
-  },
-  {
-    category: 'Career',
-    title: 'What “senior” means when juniors ship like seniors',
-    excerpt: 'Agents flattened the output gap. Judgment, taste and ownership are the new ladder.',
-    author: 'By one of us',
-    read: '7 min read',
-  },
-  {
-    category: 'Tooling',
-    title: 'Our four very different AI toolchains, compared',
-    excerpt: 'Same job, four setups. Where our editors, agents and guardrails line up, and where they don’t.',
-    author: 'By one of us',
-    read: '11 min read',
-  },
-  {
-    category: 'Engineering culture',
-    title: 'Standups, but the AI takes notes',
-    excerpt: 'Automating the most human ritual in engineering. What we kept, and what we quietly turned back off.',
-    author: 'By one of us',
-    read: '6 min read',
-  },
-  {
-    category: 'AI in practice',
-    title: 'RAG in production: the parts the tutorials skip',
-    excerpt: 'Chunking, evals and the unglamorous retrieval bugs that only show up under real traffic.',
-    author: 'By one of us',
-    read: '14 min read',
-  },
-  {
-    category: 'Career',
-    title: 'Interviewing when the take-home is AI-assisted',
-    excerpt: 'If everyone has an agent, what are you actually testing for? Rethinking the loop.',
-    author: 'By one of us',
-    read: '8 min read',
-  },
-]
 
 /* ── Signal (links + notes feed) ─────────────────────────────────────── */
 export type SignalItem = {

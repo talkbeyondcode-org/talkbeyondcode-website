@@ -1,0 +1,53 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import Kicker from '../../components/Kicker.astro'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('articles', ({ data }) => !data.draft)
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }))
+}
+
+interface Props {
+  entry: CollectionEntry<'articles'>
+}
+
+const { entry } = Astro.props
+const { Content } = await render(entry)
+const { title, excerpt, category, author, date, readingTime } = entry.data
+const dateLabel = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+
+const SITE = 'https://talkbeyondcode.com'
+const schema = [
+  {
+    '@type': 'BlogPosting',
+    headline: title,
+    description: excerpt,
+    articleSection: category,
+    datePublished: date.toISOString(),
+    author: { '@type': 'Organization', name: 'TalkBeyondCode' },
+    publisher: { '@id': `${SITE}/#organization` },
+    mainEntityOfPage: `${SITE}/articles/${entry.id}`,
+  },
+]
+---
+<Layout title={`${title} · TalkBeyondCode`} description={excerpt} ogType="article" schema={schema}>
+  <article class="mx-auto max-w-3xl px-6 py-16 md:py-20">
+    <a
+      href="/articles"
+      class="font-mono text-xs font-bold uppercase tracking-[0.1em] text-primary transition-colors hover:text-primary-deep"
+    >
+      ← Articles
+    </a>
+    <div class="mt-8"><Kicker>{category}</Kicker></div>
+    <h1 class="mt-4 text-[clamp(2rem,5vw,3rem)] font-bold leading-[1.08] tracking-tight text-ink">
+      {title}
+    </h1>
+    <p class="mt-5 font-mono text-xs uppercase tracking-[0.12em] text-muted">
+      {author} · {readingTime} · {dateLabel}
+    </p>
+    <div class="prose mt-10">
+      <Content />
+    </div>
+  </article>
+</Layout>

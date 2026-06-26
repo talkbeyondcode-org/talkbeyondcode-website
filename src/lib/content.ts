@@ -1,16 +1,9 @@
-/* Single source for the agent/AEO layer: llms.txt, llms-full.txt and the
-   raw per-page Markdown endpoints all render from the data in ../data.
-   Keeping it here means the machine-readable surface never drifts from the
-   site content. */
-import {
-  creators,
-  episodes,
-  articles,
-  featuredArticle,
-  signal,
-  YOUTUBE_URL,
-  CONTACT_EMAIL,
-} from '../data'
+/* Single source for the agent/AEO layer: llms.txt, llms-full.txt and the raw
+   per-page Markdown endpoints all render from here. Articles come from the
+   content collection; everything else from ../data. Keeping it in one place
+   means the machine-readable surface never drifts from the site content. */
+import { getCollection } from 'astro:content'
+import { creators, episodes, signal, YOUTUBE_URL, CONTACT_EMAIL } from '../data'
 
 export const SITE_URL = 'https://talkbeyondcode.com'
 export const SITE_NAME = 'TalkBeyondCode'
@@ -37,7 +30,7 @@ export const pages: PageDef[] = [
   {
     slug: 'podcast',
     path: '/podcast',
-    title: 'Ctrl+Shift+AI — the podcast',
+    title: 'Ctrl+Shift+AI (podcast)',
     summary: 'The flagship podcast and its episode list. New episodes weekly on YouTube.',
   },
   {
@@ -78,12 +71,19 @@ function episodesMd(): string {
     .join('\n')
 }
 
-function articlesMd(): string {
-  const feat = `**Featured — ${featuredArticle.title}** (${featuredArticle.category}, ${featuredArticle.read})\n${featuredArticle.excerpt}`
-  const rest = articles
-    .map((a) => `- **${a.title}** (${a.category}, ${a.read})\n  ${a.excerpt}`)
+async function articlesMd(): Promise<string> {
+  const entries = await getCollection('articles', ({ data }) => !data.draft)
+  entries.sort(
+    (a, b) =>
+      Number(b.data.featured) - Number(a.data.featured) ||
+      b.data.date.getTime() - a.data.date.getTime(),
+  )
+  return entries
+    .map((e) => {
+      const feat = e.data.featured ? 'Featured. ' : ''
+      return `- **${e.data.title}** (${feat}${e.data.category}, ${e.data.readingTime})\n  ${e.data.excerpt}\n  ${SITE_URL}/articles/${e.id}`
+    })
     .join('\n')
-  return `${feat}\n\n${rest}`
 }
 
 function signalMd(): string {
@@ -95,17 +95,17 @@ function signalMd(): string {
     .join('\n')
 }
 
-/* Clean Markdown for a single page — served at /<slug>.md for AI agents that
+/* Clean Markdown for a single page, served at /<slug>.md for AI agents that
    prefer plain text over rendered HTML. */
-export function pageMarkdown(slug: string): string {
-  const header = (title: string) => `# ${title} — ${SITE_NAME}\n\n`
+export async function pageMarkdown(slug: string): Promise<string> {
+  const header = (title: string) => `# ${title} · ${SITE_NAME}\n\n`
   switch (slug) {
     case 'index':
       return (
         header(SITE_TAGLINE) +
         `${SITE_SUMMARY}\n\n` +
         `## Podcast\nCtrl+Shift+AI. ${pages[1].summary}\n\n${episodesMd()}\n\n` +
-        `## Latest writing\n${articlesMd()}\n\n` +
+        `## Latest writing\n${await articlesMd()}\n\n` +
         `## Creators\n${creatorsMd()}\n\n` +
         `## Watch\n${YOUTUBE_URL}\n`
       )
@@ -115,14 +115,14 @@ export function pageMarkdown(slug: string): string {
         `Every week we sit down with one engineer, anywhere from junior to staff-plus and on any stack, and get into how AI actually fits their real workflow.\n\nWatch every episode on YouTube: ${YOUTUBE_URL}\n\n## Episodes\n${episodesMd()}\n\nWant to be a guest? Email ${CONTACT_EMAIL}.\n`
       )
     case 'articles':
-      return header('Articles — Notes beyond the code') + `${articlesMd()}\n`
+      return header('Articles: Notes beyond the code') + `${await articlesMd()}\n`
     case 'signal':
       return (
-        header('Signal — What the channel is tracking') +
+        header('Signal: What the channel is tracking') +
         `Links worth your time and short notes on what we are building, reading and arguing about.\n\n${signalMd()}\n`
       )
     case 'creators':
-      return header('Creators — Four engineers, one mic') + `${creatorsMd()}\n`
+      return header('Creators: Four engineers, one mic') + `${creatorsMd()}\n`
     default:
       return ''
   }
@@ -145,7 +145,7 @@ export function llmsTxt(): string {
 
 /* llms-full.txt: the whole readable surface inlined for agents that want one
    fetch. */
-export function llmsFullTxt(): string {
-  const body = pages.map((p) => pageMarkdown(p.slug)).join('\n\n---\n\n')
-  return `# ${SITE_NAME} — full content\n\n> ${SITE_SUMMARY}\n\n${body}`
+export async function llmsFullTxt(): Promise<string> {
+  const parts = await Promise.all(pages.map((p) => pageMarkdown(p.slug)))
+  return `# ${SITE_NAME}: full content\n\n> ${SITE_SUMMARY}\n\n${parts.join('\n\n---\n\n')}`
 }
