@@ -1,39 +1,40 @@
 import { useId } from 'react'
 
-/* The TBC mark: a brand-gradient diamond framing three dark “equalizer”
-   bars (a nod to the podcast waveform). Renders crisply on light surfaces.
-   A unique gradient id per instance avoids <defs> collisions on a page. */
-export function TbcMark({ size = 40, className = '' }: { size?: number; className?: string }) {
-  const gid = useId().replace(/:/g, '')
+/* The TBC mark: two brand-gradient chevrons (< >) flanking three dark
+   waveform bars (short-tall-short). Exact vector from Figma node 166:473.
+   `size` sets the height; width follows the 152:104 aspect ratio. A unique
+   gradient id per instance avoids <defs> collisions on a page. */
+export function TbcMark({ size = 36, className = '' }: { size?: number; className?: string }) {
+  const id = useId().replace(/:/g, '')
+  const gl = `tbc-l-${id}`
+  const gr = `tbc-r-${id}`
+  const width = Math.round((size * 152) / 104)
   return (
     <svg
-      width={size}
+      width={width}
       height={size}
-      viewBox="0 0 48 48"
+      viewBox="0 0 152 104"
       fill="none"
       className={className}
       aria-hidden="true"
     >
+      <path d="M52 8L8 52L52 96" stroke={`url(#${gl})`} strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M100 8L144 52L100 96" stroke={`url(#${gr})`} strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M56 36V68" stroke="#0B1220" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M76 18V86" stroke="#0B1220" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M96 36V68" stroke="#0B1220" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
       <defs>
-        <linearGradient id={gid} x1="6" y1="10" x2="42" y2="38" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#22d3ee" />
-          <stop offset="0.55" stopColor="#8b5cf6" />
-          <stop offset="1" stopColor="#e879f9" />
+        <linearGradient id={gl} x1="8" y1="8" x2="78.4" y2="43.2" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#35C4DA" />
+          <stop offset="0.55" stopColor="#6F3FDB" />
+          <stop offset="1" stopColor="#DA4BF0" />
+        </linearGradient>
+        <linearGradient id={gr} x1="100" y1="8" x2="170.4" y2="43.2" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#35C4DA" />
+          <stop offset="0.55" stopColor="#6F3FDB" />
+          <stop offset="1" stopColor="#DA4BF0" />
         </linearGradient>
       </defs>
-      <rect
-        x="8"
-        y="8"
-        width="32"
-        height="32"
-        rx="9"
-        transform="rotate(45 24 24)"
-        stroke={`url(#${gid})`}
-        strokeWidth="5"
-      />
-      <rect x="22.3" y="13.5" width="3.4" height="21" rx="1.7" fill="#0b1020" />
-      <rect x="15.6" y="18.5" width="3.4" height="11" rx="1.7" fill="#0b1020" />
-      <rect x="29" y="18.5" width="3.4" height="11" rx="1.7" fill="#0b1020" />
     </svg>
   )
 }
