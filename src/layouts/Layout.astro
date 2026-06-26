@@ -10,15 +10,24 @@ interface Props {
   description?: string
   noindex?: boolean
   ogImage?: string
+  ogType?: 'website' | 'article'
+  schema?: Record<string, unknown>[]
 }
 
-const { title, description, noindex, ogImage } = Astro.props
+const { title, description, noindex, ogImage, ogType, schema } = Astro.props
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} noindex={noindex} ogImage={ogImage} />
+    <BaseHead
+      title={title}
+      description={description}
+      noindex={noindex}
+      ogImage={ogImage}
+      ogType={ogType}
+      schema={schema}
+    />
     <ClientRouter />
   </head>
   <body>

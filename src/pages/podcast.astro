@@ -7,10 +7,54 @@ import { episodes, CONTACT_EMAIL, YOUTUBE_URL } from '../data'
 
 const rowBase =
   'group grid grid-cols-[auto_1fr_auto] items-center gap-x-5 rounded-[16px] border border-line bg-bg px-6 py-5 shadow-[var(--shadow-card)] transition-all'
+
+const SITE = 'https://talkbeyondcode.com'
+const schema = [
+  {
+    '@type': 'PodcastSeries',
+    '@id': `${SITE}/podcast#series`,
+    name: 'Ctrl+Shift+AI',
+    url: `${SITE}/podcast`,
+    description:
+      'A weekly podcast where four working engineers talk to guests about how they actually use AI in their day-to-day engineering work.',
+    webFeed: `${SITE}/rss.xml`,
+    publisher: { '@id': `${SITE}/#organization` },
+  },
+  {
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What is Ctrl+Shift+AI?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Ctrl+Shift+AI is TalkBeyondCode’s weekly podcast. Four working engineers talk to a guest about how they really use AI in their day-to-day engineering work, across stacks and career stages.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Where can I watch Ctrl+Shift+AI?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Every episode is on the TalkBeyondCode YouTube channel, with new episodes weekly.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How do I come on the podcast?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Email talkbeyondcode@gmail.com. Any stack, any level. We want the unpolished version.',
+        },
+      },
+    ],
+  },
+]
 ---
 <Layout
   title="Podcast · Ctrl+Shift+AI · TalkBeyondCode"
-  description="Ctrl+Shift+AI — conversations with engineers across career stages and stacks about how they actually adopt AI in their day-to-day work. New episodes weekly."
+  description="Ctrl+Shift+AI: conversations with engineers across career stages and stacks about how they actually adopt AI in their day-to-day work. New episodes weekly on YouTube."
+  schema={schema}
 >
   <div class="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
     {/* hero */}
@@ -36,11 +80,11 @@ const rowBase =
           Ctrl<span class="grad-text">+Shift+AI</span>
         </h1>
         <p class="mt-5 max-w-xl text-lg text-muted">
-          Conversations with people across career stages, expertise levels and tech
-          stacks about how they are adopting AI in their day-to-day engineering work.
+          We talk to engineers at every career stage and on every kind of stack about
+          how they actually use AI in their day-to-day work.
         </p>
         <p class="mt-5 font-mono text-xs uppercase tracking-[0.12em] text-muted">
-          Spotify · Apple Podcasts · YouTube · RSS
+          Watch every episode on YouTube
         </p>
         <div class="mt-7 flex flex-wrap items-center gap-4">
           <a
@@ -112,7 +156,7 @@ const rowBase =
           Using AI in your work in a way nobody talks about?
         </h2>
         <p class="mt-2 text-sm text-muted">
-          Any stack, any level — we want the unpolished version.
+          Any stack, any level. We want the unpolished version.
         </p>
       </div>
       <a

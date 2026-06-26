@@ -141,7 +141,7 @@ export const articles: Article[] = [
   {
     category: 'Tooling',
     title: 'Our four very different AI toolchains, compared',
-    excerpt: 'Same job, four setups. Where our editors, agents and guardrails agree — and where they don’t.',
+    excerpt: 'Same job, four setups. Where our editors, agents and guardrails line up, and where they don’t.',
     author: 'By one of us',
     read: '11 min read',
   },
@@ -186,7 +186,7 @@ export const signal: SignalItem[] = [
     tag: 'AI Tooling',
     date: 'Jun 2026',
     title: 'Anthropic ships computer-use for coding agents',
-    body: 'The demos look rough, but the direction is right. We ran it on a real ticket — full breakdown in episode 4.',
+    body: 'The demos look rough, but the direction is right. We ran it on a real ticket. Full breakdown in episode 4.',
     source: { label: 'anthropic.com', href: 'https://www.anthropic.com' },
   },
   {

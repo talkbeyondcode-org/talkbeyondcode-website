@@ -3,16 +3,27 @@ import Layout from '../layouts/Layout.astro'
 import PageHeader from '../components/PageHeader.astro'
 import Kicker from '../components/Kicker.astro'
 import { creators, CONTACT_EMAIL } from '../data'
+
+const SITE = 'https://talkbeyondcode.com'
+const schema = creators.map((c) => ({
+  '@type': 'Person',
+  name: c.name,
+  jobTitle: c.role,
+  knowsAbout: c.talks,
+  sameAs: [c.linkedin],
+  worksFor: { '@id': `${SITE}/#organization` },
+}))
 ---
 <Layout
   title="Creators · TalkBeyondCode"
-  description="The four engineers behind TalkBeyondCode — different companies, stacks and career stages, one shared conversation about building software in the age of AI."
+  description="The four engineers behind TalkBeyondCode. Different companies, stacks and career stages, one shared conversation about building software in the age of AI."
+  schema={schema}
 >
   <div class="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
     <PageHeader
       kicker="THE HUMANS"
       title="Four engineers, one mic"
-      intro="We ship software at different companies, on different stacks, at different career stages. That friction is the whole point — same question, four very different answers."
+      intro="We ship software at different companies, on different stacks, at different career stages. That friction is the whole point: same question, four very different answers."
     />
 
     <div class="mt-12 grid gap-6 md:grid-cols-2">
@@ -74,8 +85,8 @@ import { creators, CONTACT_EMAIL } from '../data'
           Code was never the whole story
         </h2>
         <p class="mt-5 max-w-[60ch] text-muted">
-          The four of us kept having the same conversation after standups — about the
-          decisions, trade-offs and career turns that never make it into commit
+          The four of us kept having the same conversation after standups, the one about
+          the decisions, trade-offs and career turns that never make it into commit
           messages. TalkBeyondCode is that conversation, recorded. Ctrl+Shift+AI is its
           first series: how engineers like us actually work with AI, beyond the demos.
         </p>
