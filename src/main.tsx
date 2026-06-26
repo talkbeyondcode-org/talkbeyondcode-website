@@ -1,15 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import '@fontsource-variable/bricolage-grotesque'
-import '@fontsource/martian-mono/400.css'
-import '@fontsource/martian-mono/600.css'
+import '@fontsource-variable/space-grotesk'
+import '@fontsource-variable/inter'
+import '@fontsource-variable/jetbrains-mono'
 import './index.css'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Creators from './pages/Creators'
 import Podcast from './pages/Podcast'
-import Blog from './pages/Blog'
+import Articles from './pages/Articles'
+import Signal from './pages/Signal'
 import NotFound from './pages/NotFound'
 
 const router = createBrowserRouter([
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'creators', element: <Creators /> },
       { path: 'podcast', element: <Podcast /> },
-      { path: 'blog', element: <Blog /> },
+      { path: 'articles', element: <Articles /> },
+      { path: 'signal', element: <Signal /> },
       { path: '*', element: <NotFound /> },
     ],
   },

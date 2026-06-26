@@ -1,55 +1,107 @@
 @import "tailwindcss";
 
-/* ── TalkBeyondCode design system ──────────────────────────────────────
-   Aesthetic: engineering instrument. Cool blue-black + brand-cyan signal.
-   See DESIGN.md. OKLCH only; neutrals tinted cool (hue ~258).           */
+/* ── TalkBeyondCode — “Vibrant” theme ──────────────────────────────────
+   Light, optimistic surface; violet primary; the cyan→violet→magenta
+   brand gradient as the recurring accent (logo mark, AI keycap, hero
+   highlight). Mirrors the Figma “Vibrant” variant.                      */
 @theme {
-  /* cool blue-black neutrals (brand: #07090F / #0D1322), brand cyan signal */
-  --color-bg: oklch(0.13 0.012 258);
-  --color-surface: oklch(0.17 0.015 258);
-  --color-surface-2: oklch(0.21 0.018 258);
-  --color-line: oklch(0.31 0.018 258);
-  --color-ink: oklch(0.95 0.005 250);
-  --color-muted: oklch(0.66 0.012 256);
-  --color-signal: oklch(0.8 0.12 207); /* brand cyan #22D3EE */
-  --color-signal-dim: oklch(0.62 0.1 207);
+  /* surfaces & lines */
+  --color-bg: #ffffff;          /* page */
+  --color-surface: #f7f8fc;     /* section bands, footer, plates */
+  --color-panel: #f4f6fb;       /* inset wells (inactive keycaps) */
+  --color-lav: #f3eefe;         /* lavender — announcement bar, hero glow */
+  --color-line: #e5e9f2;        /* hairline borders */
 
-  /* brand mark gradient stops — used on the logo mark ONLY */
+  /* text */
+  --color-ink: #0b1020;         /* headings, primary text */
+  --color-muted: #5a6478;       /* secondary text, labels */
+
+  /* brand */
+  --color-primary: #7c3aed;     /* violet — links, buttons, kickers */
+  --color-primary-deep: #6d28d9;
   --color-brand-cyan: #22d3ee;
   --color-brand-violet: #8b5cf6;
   --color-brand-magenta: #e879f9;
 
-  --font-sans: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Martian Mono", ui-monospace, "SFMono-Regular", monospace;
+  /* type roles (Figma: Space Grotesk / Inter / JetBrains Mono) */
+  --font-display: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
+
+  /* card elevation */
+  --shadow-card: 0 8px 24px 0 rgba(15, 18, 41, 0.06);
+  --shadow-card-hover: 0 16px 40px -8px rgba(124, 58, 237, 0.18);
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     margin: 0;
     background-color: var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    line-height: 1.62; /* light-on-dark gets extra breathing room */
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
-  /* The mono "readout" layer: labels, kickers, metadata. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  /* Mono “readout” layer: kickers, metadata, tags. */
   .label {
     font-family: var(--font-mono);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.16em;
     font-size: 0.72rem;
+    font-weight: 700;
     color: var(--color-muted);
   }
 
+  /* Section kicker — “> THE HUMANS” in violet mono. */
+  .kicker {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  /* The one place gradient text lives (per the Vibrant design). */
+  .grad-text {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-brand-cyan),
+      var(--color-brand-violet) 55%,
+      var(--color-brand-magenta)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   ::selection {
-    background: var(--color-signal);
-    color: var(--color-bg);
+    background: var(--color-primary);
+    color: #fff;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-signal);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
   }
 }
