@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.2.10",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource-variable/space-grotesk": "^5.2.10",
     "@fontsource/martian-mono": "^5.2.7",
     "@gsap/react": "^2.1.2",
     "@react-three/fiber": "^9.6.1",
