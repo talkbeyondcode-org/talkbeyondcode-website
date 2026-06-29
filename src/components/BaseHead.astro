@@ -36,7 +36,8 @@ const OG_KEYS: Record<string, string> = {
   '/signal': 'signal',
   '/creators': 'creators',
 }
-const ogKey = OG_KEYS[cleanPath] ?? 'index'
+const ogKey =
+  OG_KEYS[cleanPath] ?? (cleanPath.startsWith('/articles') ? 'articles' : 'index')
 const ogImageUrl = new URL(ogImage ?? `/og/${ogKey}.png`, site)
 
 const NAV_LABELS: Record<string, string> = {
@@ -67,12 +68,23 @@ const graph: Record<string, unknown>[] = [
   },
 ]
 
-if (cleanPath !== '/' && NAV_LABELS[cleanPath]) {
+const trail = NAV_LABELS[cleanPath]
+  ? [{ name: NAV_LABELS[cleanPath], item: canonical.href }]
+  : cleanPath.startsWith('/articles/')
+    ? [{ name: 'Articles', item: `${site.origin}/articles` }]
+    : []
+
+if (trail.length) {
   graph.push({
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.origin}/` },
-      { '@type': 'ListItem', position: 2, name: NAV_LABELS[cleanPath], item: canonical.href },
+      ...trail.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 2,
+        name: c.name,
+        item: c.item,
+      })),
     ],
   })
 }

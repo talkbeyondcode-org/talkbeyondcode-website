@@ -1,20 +1,26 @@
 import rss from '@astrojs/rss'
 import type { APIContext } from 'astro'
-import { articles, episodes } from '../data'
+import { getCollection } from 'astro:content'
+import { episodes } from '../data'
 
-export function GET(context: APIContext) {
+export async function GET(context: APIContext) {
   const site = context.site?.toString() ?? 'https://talkbeyondcode.com'
 
+  const articleEntries = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  )
+
   const items = [
+    ...articleEntries.map((a) => ({
+      title: a.data.title,
+      description: a.data.excerpt,
+      link: new URL(`/articles/${a.id}`, site).href,
+      pubDate: a.data.date,
+    })),
     ...episodes.map((e) => ({
       title: `Ctrl+Shift+AI: ${e.title}`,
       description: e.meta,
       link: new URL('/podcast', site).href,
-    })),
-    ...articles.map((a) => ({
-      title: a.title,
-      description: a.excerpt,
-      link: new URL('/articles', site).href,
     })),
   ]
 
