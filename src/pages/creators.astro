@@ -30,89 +30,83 @@ const schema = creators.map((c) => ({
       intro="Great software isn't built by one perspective. Every episode brings different viewpoints, real experiences, and thoughtful conversations about the decisions behind the code."
     />
 
-    {/* creators carousel */}
+    {/* creators carousel: one card centered, neighbors peeking either side */}
     <div class="mt-12" data-carousel>
+      <div class="relative mx-auto max-w-[560px] px-7 sm:px-10">
       <div
-        class="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        data-carousel-track
+        class="relative min-h-[400px] overflow-x-clip py-3 sm:min-h-[360px]"
+        data-carousel-stage
+        tabindex="0"
+        aria-roledescription="carousel"
+        aria-label="TalkBeyondCode creators"
       >
         {
-          creators.map((c) => (
-            <article class="flex w-[88%] shrink-0 snap-start flex-col gap-5 rounded-[20px] border border-line bg-bg p-7 shadow-[var(--shadow-card)] sm:w-[60%] md:p-8 lg:w-[calc(50%-0.75rem)]">
-              <div class="flex items-center gap-4">
+          creators.map((c, i) => (
+            <article
+              data-carousel-card
+              data-index={i}
+              class="absolute left-1/2 top-0 w-[84%] max-w-[400px] shrink-0 rounded-[20px] border border-line bg-bg p-5 shadow-[var(--shadow-card)] transition-[transform,opacity] duration-500 ease-out sm:w-[400px] sm:p-6 md:p-7"
+            >
+              <a
+                href={c.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${c.name} on LinkedIn`}
+                class="absolute right-5 top-5 inline-flex h-9 w-9 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-primary hover:bg-primary hover:text-white"
+              >
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
+                </svg>
+              </a>
+              <div class="flex items-center gap-3.5 pr-11">
                 <img
                   src={c.photo}
                   alt={c.name}
                   loading="lazy"
-                  width="56"
-                  height="56"
-                  class="h-14 w-14 shrink-0 rounded-full border border-line object-cover"
+                  width="48"
+                  height="48"
+                  class="h-12 w-12 shrink-0 rounded-full border border-line object-cover sm:h-[52px] sm:w-[52px]"
                 />
-                <div>
-                  <h2 class="text-xl font-bold tracking-tight text-ink">{c.name}</h2>
-                  <p class="mt-0.5 text-sm text-muted">{c.role}</p>
+                <div class="min-w-0 flex-1">
+                  <h2 class="text-base font-bold leading-tight tracking-tight text-ink sm:text-lg">{c.name}</h2>
+                  <p class="mt-0.5 truncate text-sm text-muted">{c.role}</p>
                 </div>
               </div>
-              <p class="text-sm leading-relaxed text-muted">{c.bio}</p>
-              <div class="grid gap-5 sm:grid-cols-2">
-                <div>
-                  <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.2em] text-muted">Stack</span>
-                  <div class="mt-2.5 flex flex-wrap gap-2">
-                    {c.stack.map((t) => (
-                      <span class="rounded-full border border-line bg-bg px-3 py-1 font-mono text-xs text-ink">{t}</span>
-                    ))}
-                  </div>
+              <p class="mt-4 text-sm leading-relaxed text-muted">{c.bio}</p>
+              <div class="mt-4">
+                <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.2em] text-muted">Talks about</span>
+                <div class="mt-2.5 flex flex-wrap gap-2">
+                  {c.talks.map((t) => (
+                    <span class="rounded-full border border-line bg-bg px-3 py-1 font-mono text-xs text-ink">{t}</span>
+                  ))}
                 </div>
-                <div>
-                  <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.2em] text-muted">Talks about</span>
-                  <div class="mt-2.5 flex flex-wrap gap-2">
-                    {c.talks.map((t) => (
-                      <span class="rounded-full border border-line bg-bg px-3 py-1 font-mono text-xs text-ink">{t}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div class="mt-auto flex items-center justify-between border-t border-line pt-4">
-                <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.2em] text-muted">Connect</span>
-                <a
-                  href={c.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`${c.name} on LinkedIn`}
-                  class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-primary hover:bg-primary hover:text-white"
-                >
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
-                  </svg>
-                </a>
               </div>
             </article>
           ))
         }
       </div>
 
-      {/* carousel controls */}
-      <div class="mt-5 flex items-center justify-between">
-        <div class="flex gap-2" data-carousel-dots aria-hidden="true"></div>
-        <div class="flex gap-2">
-          <button
-            type="button"
-            data-carousel-prev
-            aria-label="Previous creator"
-            class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-30"
-          >
-            ←
-          </button>
-          <button
-            type="button"
-            data-carousel-next
-            aria-label="Next creator"
-            class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-30"
-          >
-            →
-          </button>
-        </div>
+      {/* side arrows, flanking the stage */}
+      <button
+        type="button"
+        data-carousel-prev
+        aria-label="Previous creator"
+        class="absolute left-0 top-1/2 z-20 inline-flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-bg text-ink shadow-[var(--shadow-card)] transition-colors hover:border-primary hover:text-primary"
+      >
+        ←
+      </button>
+      <button
+        type="button"
+        data-carousel-next
+        aria-label="Next creator"
+        class="absolute right-0 top-1/2 z-20 inline-flex h-11 w-11 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border border-line bg-bg text-ink shadow-[var(--shadow-card)] transition-colors hover:border-primary hover:text-primary"
+      >
+        →
+      </button>
       </div>
+
+      {/* dots */}
+      <div class="mt-6 flex items-center justify-center gap-2" data-carousel-dots aria-hidden="true"></div>
     </div>
 
     <section class="mt-16 flex flex-col items-start justify-between gap-6 rounded-[24px] border border-line bg-bg p-8 shadow-[var(--shadow-card)] sm:flex-row sm:items-center md:p-10">
@@ -135,44 +129,93 @@ const schema = creators.map((c) => ({
   function initCreatorCarousel() {
     const root = document.querySelector<HTMLElement>('[data-carousel]')
     if (!root) return
-    const track = root.querySelector<HTMLElement>('[data-carousel-track]')
+    const stage = root.querySelector<HTMLElement>('[data-carousel-stage]')
     const dotsWrap = root.querySelector<HTMLElement>('[data-carousel-dots]')
     const prev = root.querySelector<HTMLButtonElement>('[data-carousel-prev]')
     const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]')
-    if (!track || !dotsWrap || !prev || !next) return
+    if (!stage || !dotsWrap || !prev || !next) return
 
-    const cards = [...track.children] as HTMLElement[]
-    const step = () => (cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : cards[0].offsetWidth)
+    const cards = [...stage.querySelectorAll<HTMLElement>('[data-carousel-card]')]
+    const n = cards.length
+    if (!n) return
+    let active = 0
 
-    // one dot per card
     const dots = cards.map((_, i) => {
       const b = document.createElement('button')
       b.type = 'button'
       b.setAttribute('aria-label', `Go to creator ${i + 1}`)
       b.className = 'h-2 w-2 rounded-full bg-line transition-colors'
-      b.addEventListener('click', () => track.scrollTo({ left: step() * i, behavior: 'smooth' }))
+      b.addEventListener('click', () => goTo(i))
       dotsWrap.appendChild(b)
       return b
     })
 
-    function activeIndex() {
-      return Math.round(track!.scrollLeft / step())
+    function layout() {
+      const cardWidth = cards[0].offsetWidth
+      const offset = Math.min(stage!.clientWidth * 0.42, cardWidth * 0.86)
+      let maxHeight = 0
+
+      cards.forEach((card, i) => {
+        let d = i - active
+        if (d > n / 2) d -= n
+        if (d < -n / 2) d += n
+        const dist = Math.abs(d)
+        const visible = dist <= 1
+        const scale = dist === 0 ? 1 : 0.86
+        const opacity = dist === 0 ? 1 : dist === 1 ? 0.42 : 0
+
+        card.style.transform = `translateX(-50%) translateX(${d * offset}px) scale(${scale})`
+        card.style.opacity = String(opacity)
+        card.style.zIndex = String(10 - dist)
+        card.style.pointerEvents = dist === 0 ? 'auto' : 'none'
+        card.setAttribute('aria-hidden', dist === 0 ? 'false' : 'true')
+        if (visible) maxHeight = Math.max(maxHeight, card.offsetHeight)
+      })
+
+      stage!.style.height = `${maxHeight}px`
+      dots.forEach((d, i) => {
+        d.classList.toggle('bg-primary', i === active)
+        d.classList.toggle('bg-line', i !== active)
+      })
     }
 
-    function sync() {
-      const idx = activeIndex()
-      dots.forEach((d, i) => d.classList.toggle('bg-primary', i === idx))
-      dots.forEach((d, i) => d.classList.toggle('bg-line', i !== idx))
-      const maxScroll = track!.scrollWidth - track!.clientWidth - 1
-      prev!.disabled = track!.scrollLeft <= 1
-      next!.disabled = track!.scrollLeft >= maxScroll
+    function goTo(i: number) {
+      active = ((i % n) + n) % n
+      layout()
     }
 
-    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }))
-    next.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }))
-    track.addEventListener('scroll', sync, { passive: true })
-    window.addEventListener('resize', sync)
-    sync()
+    prev.addEventListener('click', () => goTo(active - 1))
+    next.addEventListener('click', () => goTo(active + 1))
+    stage.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') goTo(active - 1)
+      if (e.key === 'ArrowRight') goTo(active + 1)
+    })
+
+    // swipe / drag
+    let dragging = false
+    let startX = 0
+    let dx = 0
+    stage.addEventListener('pointerdown', (e) => {
+      dragging = true
+      startX = e.clientX
+      dx = 0
+    })
+    stage.addEventListener('pointermove', (e) => {
+      if (!dragging) return
+      dx = e.clientX - startX
+    })
+    const endDrag = () => {
+      if (!dragging) return
+      dragging = false
+      if (dx > 40) goTo(active - 1)
+      else if (dx < -40) goTo(active + 1)
+      dx = 0
+    }
+    stage.addEventListener('pointerup', endDrag)
+    stage.addEventListener('pointerleave', endDrag)
+
+    window.addEventListener('resize', layout)
+    layout()
   }
 
   document.addEventListener('astro:page-load', initCreatorCarousel)
