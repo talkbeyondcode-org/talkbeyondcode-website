@@ -72,6 +72,9 @@ export type Episode = {
   href?: string
 }
 
+// Only real, published episodes live here. Add a new entry when an episode
+// goes live — placeholder/"TBA" rows are intentionally not shipped (they'd
+// leak into the RSS feed and llms.txt as fake episodes).
 export const episodes: Episode[] = [
   {
     n: '01',
@@ -80,24 +83,6 @@ export const episodes: Episode[] = [
     status: 'Watch now',
     live: true,
     href: WATCH_EP1_URL,
-  },
-  {
-    n: '02',
-    title: 'How a staff engineer reviews AI-generated code',
-    meta: 'Guest: TBA · Staff Engineer',
-    status: 'Upcoming',
-  },
-  {
-    n: '03',
-    title: 'Junior in the age of agents: learning to code in 2026',
-    meta: 'Guest: TBA · Early-career dev',
-    status: 'Upcoming',
-  },
-  {
-    n: '04',
-    title: 'Shipping an AI feature without an ML team',
-    meta: 'Guest: TBA · Product Engineer',
-    status: 'Upcoming',
   },
 ]
 

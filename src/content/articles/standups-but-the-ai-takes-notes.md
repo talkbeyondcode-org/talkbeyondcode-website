@@ -2,7 +2,7 @@
 title: "Standups, but the AI takes notes"
 excerpt: "Automating the most human ritual in engineering. What we kept, and what we quietly turned back off."
 category: "Engineering culture"
-author: "By one of us"
+author: gayathri
 date: 2026-05-20
 readingTime: "6 min read"
 ---

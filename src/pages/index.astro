@@ -5,16 +5,19 @@ import Kicker from '../components/Kicker.astro'
 import TbcMark from '../components/TbcMark.astro'
 import Keycap from '../components/Keycap.astro'
 import Newsletter from '../components/Newsletter.astro'
-import { getCollection } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
 import { signal, creators } from '../data'
 
-const latestArticles = (await getCollection('articles', ({ data }) => !data.draft))
-  .sort(
-    (a, b) =>
-      Number(b.data.featured) - Number(a.data.featured) ||
-      b.data.date.getTime() - a.data.date.getTime(),
-  )
-  .slice(0, 3)
+const latestArticles = await Promise.all(
+  (await getCollection('articles', ({ data }) => !data.draft))
+    .sort(
+      (a, b) =>
+        Number(b.data.featured) - Number(a.data.featured) ||
+        b.data.date.getTime() - a.data.date.getTime(),
+    )
+    .slice(0, 3)
+    .map(async (entry) => ({ entry, author: (await getEntry(entry.data.author))!.data })),
+)
 
 const drops = [
   {
@@ -75,7 +78,7 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
       class="pointer-events-none absolute -right-40 -top-40 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.18),rgba(34,211,238,0.10)_45%,transparent_70%)] blur-[10px]"
     >
     </div>
-    <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-[1.15fr_0.85fr] md:px-10 md:py-28">
+    <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-14 md:grid-cols-[1.15fr_0.85fr] md:px-10 md:py-28">
       <div>
         <div data-hero><Kicker>FOUR ENGINEERS · ONE CHANNEL</Kicker></div>
         <h1 data-hero class="mt-5 text-[clamp(2.6rem,6vw,4rem)] font-bold leading-[1.04] tracking-[-0.02em] text-ink">
@@ -101,9 +104,11 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
         </div>
       </div>
 
-      <div data-hero class="flex items-center justify-center gap-8 md:justify-end">
-        <TbcMark id="hero" size={168} />
-        <div class="flex items-end gap-2" aria-hidden="true">
+      {/* the nav already carries the logo on mobile; showing it again here reads
+          as two logos stacked, so the hero visual is md-and-up only */}
+      <div data-hero class="hidden items-center gap-5 md:flex md:justify-end md:gap-8">
+        <TbcMark id="hero" size={168} class="h-auto w-[clamp(120px,16vw,245px)]" />
+        <div class="flex items-end gap-1.5 md:gap-2" aria-hidden="true">
           {
             waveBars.map((h) => (
               <span
@@ -173,7 +178,7 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
           the hype and ask what they really do.
         </p>
         <p class="mt-5 font-mono text-xs uppercase tracking-[0.12em] text-muted">
-          Watch every episode on YouTube
+          Watch on YouTube
         </p>
         <div class="mt-7 flex flex-wrap items-center gap-4">
           <a
@@ -193,17 +198,21 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
     <SectionHead kicker="WRITING" title="Latest writing" href="/articles" hrefLabel="All articles" />
     <div class="mt-10 grid gap-6 md:grid-cols-3">
       {
-        latestArticles.map((a) => (
+        latestArticles.map(({ entry, author }) => (
           <a
-            href={`/articles/${a.id}`}
+            href={`/articles/${entry.id}`}
             class="group flex flex-col overflow-hidden rounded-[20px] border border-line bg-bg shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
           >
-            <div class="flex h-36 items-center justify-center bg-lav font-mono text-2xl font-bold text-primary/70">&lt;/&gt;</div>
+            {entry.data.coverImage ? (
+              <img src={entry.data.coverImage} alt={entry.data.title} class="h-36 w-full object-cover" />
+            ) : (
+              <div class="flex h-36 items-center justify-center bg-lav font-mono text-2xl font-bold text-primary/70">&lt;/&gt;</div>
+            )}
             <div class="flex flex-1 flex-col p-6">
-              <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.2em] text-primary">{a.data.category}</span>
-              <h3 class="mt-3 text-lg font-bold leading-snug tracking-tight text-ink">{a.data.title}</h3>
+              <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.2em] text-primary">{entry.data.category}</span>
+              <h3 class="mt-3 text-lg font-bold leading-snug tracking-tight text-ink">{entry.data.title}</h3>
               <span class="mt-auto pt-6 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-muted">
-                {a.data.author} · {a.data.readingTime}
+                {author.name} · {entry.data.readingTime}
               </span>
             </div>
           </a>

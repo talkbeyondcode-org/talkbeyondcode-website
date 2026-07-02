@@ -1,17 +1,20 @@
 ---
-import { getCollection } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import PageHeader from '../components/PageHeader.astro'
 import Newsletter from '../components/Newsletter.astro'
 import { articleCategories } from '../data'
 
-const all = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+const raw = (await getCollection('articles', ({ data }) => !data.draft)).sort(
   (a, b) =>
     Number(b.data.featured) - Number(a.data.featured) ||
     b.data.date.getTime() - a.data.date.getTime(),
 )
-const featured = all.find((a) => a.data.featured) ?? all[0]
-const rest = all.filter((a) => a.id !== featured?.id)
+const all = await Promise.all(
+  raw.map(async (entry) => ({ entry, author: (await getEntry(entry.data.author))!.data })),
+)
+const featured = all.find((a) => a.entry.data.featured) ?? all[0]
+const rest = all.filter((a) => a.entry.id !== featured?.entry.id)
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 
 const SITE = 'https://talkbeyondcode.com'
@@ -22,63 +25,75 @@ const schema = [
     name: 'TalkBeyondCode Articles',
     url: `${SITE}/articles`,
     publisher: { '@id': `${SITE}/#organization` },
-    blogPost: all.map((a) => ({
+    blogPost: all.map(({ entry, author }) => ({
       '@type': 'BlogPosting',
-      headline: a.data.title,
-      description: a.data.excerpt,
-      articleSection: a.data.category,
-      datePublished: a.data.date.toISOString(),
-      url: `${SITE}/articles/${a.id}`,
-      author: { '@id': `${SITE}/#organization` },
+      headline: entry.data.title,
+      description: entry.data.excerpt,
+      articleSection: entry.data.category,
+      datePublished: entry.data.date.toISOString(),
+      url: `${SITE}/articles/${entry.id}`,
+      author: { '@type': 'Person', name: author.name },
     })),
   },
 ]
 ---
 <Layout
   title="Articles · TalkBeyondCode"
-  description="Long-form writing from four working engineers on what we’re building, breaking and rethinking as AI reshapes the day-to-day."
+  description="Long-form writing from working engineers on what we’re building, breaking and rethinking as AI reshapes the day-to-day."
   schema={schema}
 >
   <div class="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20">
     <PageHeader
       kicker="WRITING"
       title="Notes beyond the code"
-      intro="Long-form writing from the four of us on what we’re building, breaking and rethinking as AI reshapes the day-to-day."
+      intro="Long-form writing from us and guest engineers on what we’re building, breaking and rethinking as AI reshapes the day-to-day."
     />
 
+    {all.length === 0 && (
+      <div class="mt-12 rounded-[24px] border border-dashed border-line bg-surface p-12 text-center">
+        <p class="font-mono text-xs uppercase tracking-[0.16em] text-muted">First articles landing soon</p>
+      </div>
+    )}
+
     {/* filters */}
-    <div class="mt-8 flex flex-wrap gap-2.5" data-filters>
-      {
-        articleCategories.map((cat) => (
-          <button
-            type="button"
-            data-filter={cat}
-            class="filter-chip rounded-full border px-4 py-1.5 font-mono text-xs tracking-[0.06em] transition-colors"
-          >
-            {cat}
-          </button>
-        ))
-      }
-    </div>
+    {all.length > 0 && (
+      <div class="mt-8 flex flex-wrap gap-2.5" data-filters>
+        {
+          articleCategories.map((cat) => (
+            <button
+              type="button"
+              data-filter={cat}
+              class="filter-chip rounded-full border px-4 py-1.5 font-mono text-xs tracking-[0.06em] transition-colors"
+            >
+              {cat}
+            </button>
+          ))
+        }
+      </div>
+    )}
 
     {/* featured */}
     {featured && (
       <a
-        href={`/articles/${featured.id}`}
-        data-category={featured.data.category}
+        href={`/articles/${featured.entry.id}`}
+        data-category={featured.entry.data.category}
         class="group mt-10 grid overflow-hidden rounded-[24px] border border-line bg-bg shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)] md:grid-cols-[1fr_1.2fr]"
       >
-        <div class="flex min-h-[220px] items-center justify-center bg-lav font-mono text-4xl font-bold text-primary/70">&lt;/&gt;</div>
+        {featured.entry.data.coverImage ? (
+          <img src={featured.entry.data.coverImage} alt={featured.entry.data.title} class="h-full min-h-[220px] w-full object-cover" />
+        ) : (
+          <div class="flex min-h-[220px] items-center justify-center bg-lav font-mono text-4xl font-bold text-primary/70">&lt;/&gt;</div>
+        )}
         <div class="flex flex-col justify-center p-8 md:p-10">
           <span class="font-mono text-[0.7rem] font-bold uppercase tracking-[0.2em] text-primary">
-            Featured · {featured.data.category}
+            Featured · {featured.entry.data.category}
           </span>
           <h2 class="mt-4 text-[clamp(1.5rem,3vw,2.1rem)] font-bold leading-tight tracking-tight text-ink">
-            {featured.data.title}
+            {featured.entry.data.title}
           </h2>
-          <p class="mt-4 max-w-xl text-muted">{featured.data.excerpt}</p>
+          <p class="mt-4 max-w-xl text-muted">{featured.entry.data.excerpt}</p>
           <span class="mt-6 font-mono text-[0.72rem] uppercase tracking-[0.12em] text-muted">
-            {featured.data.author} · {featured.data.readingTime} · {fmt(featured.data.date)}
+            {featured.author.name} · {featured.entry.data.readingTime} · {fmt(featured.entry.data.date)}
           </span>
         </div>
       </a>
@@ -87,19 +102,23 @@ const schema = [
     {/* grid */}
     <div class="mt-6 grid gap-6 md:grid-cols-3" data-grid>
       {
-        rest.map((a) => (
+        rest.map(({ entry, author }) => (
           <a
-            href={`/articles/${a.id}`}
-            data-category={a.data.category}
+            href={`/articles/${entry.id}`}
+            data-category={entry.data.category}
             class="group flex flex-col overflow-hidden rounded-[20px] border border-line bg-bg shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
           >
-            <div class="flex h-36 items-center justify-center bg-lav font-mono text-2xl font-bold text-primary/70">&lt;/&gt;</div>
+            {entry.data.coverImage ? (
+              <img src={entry.data.coverImage} alt={entry.data.title} class="h-36 w-full object-cover" />
+            ) : (
+              <div class="flex h-36 items-center justify-center bg-lav font-mono text-2xl font-bold text-primary/70">&lt;/&gt;</div>
+            )}
             <div class="flex flex-1 flex-col p-6">
-              <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.2em] text-primary">{a.data.category}</span>
-              <h3 class="mt-3 text-lg font-bold leading-snug tracking-tight text-ink">{a.data.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-muted">{a.data.excerpt}</p>
+              <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.2em] text-primary">{entry.data.category}</span>
+              <h3 class="mt-3 text-lg font-bold leading-snug tracking-tight text-ink">{entry.data.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{entry.data.excerpt}</p>
               <span class="mt-auto pt-6 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-muted">
-                {a.data.author} · {a.data.readingTime}
+                {author.name} · {entry.data.readingTime}
               </span>
             </div>
           </a>

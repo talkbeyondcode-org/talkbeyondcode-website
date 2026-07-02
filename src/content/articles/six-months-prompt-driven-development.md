@@ -2,7 +2,7 @@
 title: "Six months of prompt-driven development: our honest scorecard"
 excerpt: "Four engineers, four stacks, one rule: reach for the agent first. What sped up, what broke, and the practices we kept after the experiment ended."
 category: "AI in practice"
-author: "Sagar Vemala"
+author: sagar-vemala
 date: 2026-06-20
 readingTime: "12 min read"
 featured: true
