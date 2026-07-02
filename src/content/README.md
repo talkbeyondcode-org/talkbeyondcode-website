@@ -38,7 +38,8 @@ frontmatter-only file per person in `contributors/`:
 name: "Jane Doe"
 role: "Staff Engineer @ Acme"
 bio: "Optional one-line bio."
-avatar: "/creators/jane.jpg"   # optional; drop the image in public/creators/
+avatar: "/contributors/jane.jpg"   # optional; drop the image in public/contributors/
+                                    # (public/creators/ is reserved for the four hosts)
 linkedin: "https://www.linkedin.com/in/janedoe/"
 twitter: "https://x.com/janedoe"     # optional
 github: "https://github.com/janedoe" # optional

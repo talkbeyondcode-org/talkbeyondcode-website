@@ -6,46 +6,41 @@ import TbcMark from '../components/TbcMark.astro'
 import Keycap from '../components/Keycap.astro'
 import Newsletter from '../components/Newsletter.astro'
 import { getCollection, getEntry } from 'astro:content'
-import { signal, creators } from '../data'
+import { signal, creators, episodes } from '../data'
 
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+
+const sortedArticles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
+  (a, b) =>
+    Number(b.data.featured) - Number(a.data.featured) || b.data.date.getTime() - a.data.date.getTime(),
+)
 const latestArticles = await Promise.all(
-  (await getCollection('articles', ({ data }) => !data.draft))
-    .sort(
-      (a, b) =>
-        Number(b.data.featured) - Number(a.data.featured) ||
-        b.data.date.getTime() - a.data.date.getTime(),
-    )
-    .slice(0, 3)
-    .map(async (entry) => ({ entry, author: (await getEntry(entry.data.author))!.data })),
+  sortedArticles.slice(0, 3).map(async (entry) => ({ entry, author: (await getEntry(entry.data.author))!.data })),
 )
 
-const drops = [
-  {
+// "Fresh from the channel" is a real, live feed: the current live episode(s)
+// first, then the newest articles filling the remaining slots.
+const dropEpisodes = episodes
+  .filter((e) => e.live)
+  .map((e) => ({
     kind: 'Podcast',
-    date: 'Jun 2026',
+    date: 'New',
     keycaps: true,
-    title: 'Launching Ctrl+Shift+AI, our new podcast',
-    blurb: 'Conversations with engineers across stacks, roles and career stages on how they really use AI.',
-    cta: 'Listen',
-    to: '/podcast',
-  },
-  {
-    kind: 'Article',
-    date: 'Jun 2026',
-    title: 'Prompt-driven development: what stuck, what didn’t',
-    blurb: 'Six months of building with agents, scored honestly across four different stacks.',
-    cta: 'Read',
-    to: '/articles',
-  },
-  {
-    kind: 'Article',
-    date: 'May 2026',
-    title: 'We let AI write our standups for a month',
-    blurb: 'An experiment in automating the most human ritual in engineering. Results were… mixed.',
-    cta: 'Read',
-    to: '/articles',
-  },
-]
+    title: e.title,
+    blurb: e.meta,
+    cta: 'Watch',
+    to: e.href ?? '/podcast',
+  }))
+const dropArticles = sortedArticles.slice(0, Math.max(0, 3 - dropEpisodes.length)).map((entry) => ({
+  kind: 'Article',
+  date: fmt(entry.data.date),
+  keycaps: false,
+  title: entry.data.title,
+  blurb: entry.data.excerpt,
+  cta: 'Read',
+  to: `/articles/${entry.id}`,
+}))
+const drops = [...dropEpisodes, ...dropArticles].slice(0, 3)
 
 const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
 ---
@@ -85,8 +80,8 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
           Engineering conversations<br /><span class="grad-text">beyond the code.</span>
         </h1>
         <p data-hero class="mt-6 max-w-xl text-lg text-muted">
-          Four working engineers on what we’re building and breaking, plus honest
-          conversations about how AI is changing the way we ship.
+          Engineering conversations beyond the code.
+          Real engineering conversations about building software, solving problems, and adapting to the AI era.
         </p>
         <div data-hero class="mt-8 flex flex-wrap items-center gap-3">
           <a
@@ -223,23 +218,28 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
 
   {/* four engineers */}
   <section class="border-t border-line bg-surface">
-    <div class="mx-auto max-w-6xl px-6 py-20 md:px-10">
+    <div class="mx-auto max-w-6xl px-6 py-16 md:px-10">
       <SectionHead kicker="THE HUMANS" title="Four engineers, one mic" href="/creators" hrefLabel="Meet the creators" />
-      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-8 grid grid-cols-1 gap-3 rounded-[20px] border border-line bg-bg p-4 shadow-[var(--shadow-card)] sm:grid-cols-2 lg:grid-cols-4 md:p-5">
         {
           creators.map((c) => (
-            <div class="rounded-[20px] border border-line bg-bg p-6 text-center shadow-[var(--shadow-card)]">
+            <a
+              href="/creators"
+              class="flex min-w-0 items-center gap-3 rounded-[14px] p-3 transition-colors hover:bg-surface"
+            >
               <img
                 src={c.photo}
                 alt={c.name}
                 loading="lazy"
-                width="64"
-                height="64"
-                class="mx-auto h-16 w-16 rounded-full border border-line object-cover"
+                width="44"
+                height="44"
+                class="h-11 w-11 shrink-0 rounded-full border border-line object-cover"
               />
-              <h3 class="mt-4 font-bold tracking-tight text-ink">{c.name}</h3>
-              <p class="mt-1 text-sm text-muted">{c.focus}</p>
-            </div>
+              <span class="min-w-0">
+                <span class="block truncate font-mono text-sm font-bold tracking-tight text-ink">{c.name}</span>
+                <span class="block truncate text-xs text-muted">{c.focus}</span>
+              </span>
+            </a>
           ))
         }
       </div>
