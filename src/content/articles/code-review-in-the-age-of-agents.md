@@ -2,7 +2,7 @@
 title: "Code review in the age of agents"
 excerpt: "Who owns the diff when the first draft was written by a model? Our review rules, rewritten."
 category: "AI in practice"
-author: "By one of us"
+author: sagar-vemala
 date: 2026-06-10
 readingTime: "9 min read"
 ---

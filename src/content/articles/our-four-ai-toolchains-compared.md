@@ -2,7 +2,7 @@
 title: "Our four very different AI toolchains, compared"
 excerpt: "Same job, four setups. Where our editors, agents and guardrails line up, and where they don't."
 category: "Tooling"
-author: "By one of us"
+author: ravi-seelam
 date: 2026-05-28
 readingTime: "11 min read"
 ---

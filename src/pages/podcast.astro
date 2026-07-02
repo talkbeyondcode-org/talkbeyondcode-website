@@ -84,7 +84,7 @@ const schema = [
           how they actually use AI in their day-to-day work.
         </p>
         <p class="mt-5 font-mono text-xs uppercase tracking-[0.12em] text-muted">
-          Watch every episode on YouTube
+          Watch on YouTube
         </p>
         <div class="mt-7 flex flex-wrap items-center gap-4">
           <a
@@ -115,9 +115,16 @@ const schema = [
                   {ep.n}
                 </span>
                 <div>
-                  <h3 class:list={['text-base font-bold tracking-tight text-ink md:text-lg', ep.live && 'transition-colors group-hover:text-primary']}>
-                    {ep.title}
-                  </h3>
+                  <div class="flex flex-wrap items-center gap-2.5">
+                    {ep.live && (
+                      <span class="inline-flex items-center rounded-full bg-gradient-to-r from-brand-cyan via-brand-violet to-brand-magenta px-2.5 py-0.5 font-mono text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white">
+                        New
+                      </span>
+                    )}
+                    <h3 class:list={['text-base font-bold tracking-tight text-ink md:text-lg', ep.live && 'transition-colors group-hover:text-primary']}>
+                      {ep.title}
+                    </h3>
+                  </div>
                   <p class="mt-1 font-mono text-xs tracking-[0.06em] text-muted">{ep.meta}</p>
                 </div>
                 <div class="flex items-center gap-4">

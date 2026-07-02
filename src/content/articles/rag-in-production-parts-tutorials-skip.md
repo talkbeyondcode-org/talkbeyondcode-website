@@ -2,7 +2,7 @@
 title: "RAG in production: the parts the tutorials skip"
 excerpt: "Chunking, evals and the unglamorous retrieval bugs that only show up under real traffic."
 category: "AI in practice"
-author: "By one of us"
+author: vivek-raj
 date: 2026-05-12
 readingTime: "14 min read"
 ---

@@ -2,7 +2,7 @@
 title: "What \"senior\" means when juniors ship like seniors"
 excerpt: "Agents flattened the output gap. Judgment, taste and ownership are the new ladder."
 category: "Career"
-author: "By one of us"
+author: sagar-vemala
 date: 2026-06-05
 readingTime: "7 min read"
 ---

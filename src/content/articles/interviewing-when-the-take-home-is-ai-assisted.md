@@ -2,7 +2,7 @@
 title: "Interviewing when the take-home is AI-assisted"
 excerpt: "If everyone has an agent, what are you actually testing for? Rethinking the loop."
 category: "Career"
-author: "By one of us"
+author: vivek-raj
 date: 2026-05-04
 readingTime: "8 min read"
 ---
