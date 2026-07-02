@@ -20,7 +20,7 @@ export const creators: Creator[] = [
     name: 'Sagar Vemala',
     initials: 'SV',
     role: 'Engineering Manager @ WaveMaker',
-    focus: 'Full-stack · 10+ yrs',
+    focus: 'Engineering Manager · 10+ yrs',
     bio: 'Builds product end-to-end and has opinions about every layer. Leads developer experience through WaveMaker’s shift to AI-native, agentic development.',
     stack: ['TypeScript', 'React', 'Node', 'LLM tooling'],
     talks: ['AI workflows', 'DX', 'Architecture'],
