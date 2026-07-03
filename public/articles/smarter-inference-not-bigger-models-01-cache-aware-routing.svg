@@ -1,0 +1,129 @@
+<svg viewBox="0 0 1200 880" xmlns="http://www.w3.org/2000/svg" font-family="'Space Grotesk', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="brand2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.55" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#e879f9"/>
+    </linearGradient>
+    <marker id="arrGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9aa3b5"/>
+    </marker>
+    <marker id="arrRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#10b981"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="880" fill="#ffffff"/>
+
+  <!-- title -->
+  <text x="600" y="58" text-anchor="middle" font-size="34" font-weight="700" fill="#0b1020">Why round-robin load balancing fails LLM inference</text>
+  <text x="600" y="92" text-anchor="middle" font-size="18" fill="#5a6478">The same multi-turn conversation, routed two ways</text>
+
+  <!-- ============ LEFT PANEL: stateless ============ -->
+  <rect x="40" y="120" width="545" height="620" rx="20" fill="#fef7f7" stroke="#f3d9d9"/>
+  <text x="312" y="162" text-anchor="middle" font-size="22" font-weight="700" fill="#b91c1c">Stateless round-robin</text>
+  <text x="312" y="188" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#5a6478">the web-app playbook, applied to LLMs</text>
+
+  <!-- user -->
+  <circle cx="312" cy="248" r="26" fill="#ffffff" stroke="#e5e9f2" stroke-width="2"/>
+  <circle cx="312" cy="241" r="8" fill="#5a6478"/>
+  <path d="M298 262 a14 10 0 0 1 28 0" fill="#5a6478"/>
+  <text x="312" y="300" text-anchor="middle" font-size="14" fill="#5a6478">multi-turn conversation</text>
+
+  <!-- load balancer -->
+  <rect x="222" y="322" width="180" height="46" rx="10" fill="#ffffff" stroke="#e5e9f2" stroke-width="2"/>
+  <text x="312" y="351" text-anchor="middle" font-size="16" font-weight="600" fill="#0b1020">Load balancer</text>
+  <line x1="312" y1="274" x2="312" y2="316" stroke="#9aa3b5" stroke-width="2" marker-end="url(#arrGray)"/>
+
+  <!-- arrows to pods -->
+  <path d="M262 368 C 200 400 160 430 138 466" fill="none" stroke="#9aa3b5" stroke-width="2.5" marker-end="url(#arrGray)"/>
+  <path d="M312 368 L312 466" fill="none" stroke="#9aa3b5" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#arrGray)"/>
+  <path d="M362 368 C 424 400 464 430 486 466" fill="none" stroke="#ef4444" stroke-width="3" marker-end="url(#arrRed)"/>
+  <text x="180" y="416" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#5a6478">turn 1</text>
+  <text x="440" y="416" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" font-weight="700" fill="#ef4444">turn 2</text>
+
+  <!-- pods -->
+  <g>
+    <rect x="68" y="472" width="140" height="118" rx="14" fill="#ffffff" stroke="#e5e9f2" stroke-width="2"/>
+    <text x="138" y="502" text-anchor="middle" font-size="15" font-weight="700" fill="#0b1020">GPU pod A</text>
+    <rect x="84" y="516" width="108" height="30" rx="8" fill="#fff7ed" stroke="#fdba74"/>
+    <text x="138" y="536" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="12" fill="#c2410c">cache: warm</text>
+    <text x="138" y="574" text-anchor="middle" font-size="12" fill="#5a6478">…then sits idle</text>
+  </g>
+  <g>
+    <rect x="242" y="472" width="140" height="118" rx="14" fill="#ffffff" stroke="#e5e9f2" stroke-width="2"/>
+    <text x="312" y="502" text-anchor="middle" font-size="15" font-weight="700" fill="#0b1020">GPU pod B</text>
+    <rect x="258" y="516" width="108" height="30" rx="8" fill="#f7f8fc" stroke="#e5e9f2"/>
+    <text x="312" y="536" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="12" fill="#5a6478">cache: cold</text>
+    <text x="312" y="574" text-anchor="middle" font-size="12" fill="#5a6478">idle</text>
+  </g>
+  <g>
+    <rect x="416" y="472" width="140" height="118" rx="14" fill="#ffffff" stroke="#ef4444" stroke-width="2.5"/>
+    <text x="486" y="502" text-anchor="middle" font-size="15" font-weight="700" fill="#0b1020">GPU pod C</text>
+    <rect x="432" y="516" width="108" height="30" rx="8" fill="#fef2f2" stroke="#fca5a5"/>
+    <text x="486" y="536" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="12" fill="#b91c1c">cache: cold</text>
+    <text x="486" y="574" text-anchor="middle" font-size="12" font-weight="700" fill="#b91c1c">recomputes it all</text>
+  </g>
+
+  <!-- outcome -->
+  <rect x="68" y="622" width="488" height="88" rx="14" fill="#fef2f2" stroke="#fca5a5"/>
+  <text x="92" y="656" font-size="16" font-weight="700" fill="#b91c1c">&#10007;  Context rebuilt from scratch on every hop</text>
+  <text x="92" y="686" font-size="14" fill="#7f1d1d">Wasted GPU cycles · slower responses · higher bills</text>
+
+  <!-- ============ RIGHT PANEL: llm-d ============ -->
+  <rect x="615" y="120" width="545" height="620" rx="20" fill="#f6fdf9" stroke="#c9ecd9"/>
+  <text x="887" y="162" text-anchor="middle" font-size="22" font-weight="700" fill="#047857">Cache-aware routing (llm-d)</text>
+  <text x="887" y="188" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#5a6478">the scheduler knows where the context lives</text>
+
+  <!-- user -->
+  <circle cx="887" cy="248" r="26" fill="#ffffff" stroke="#e5e9f2" stroke-width="2"/>
+  <circle cx="887" cy="241" r="8" fill="#5a6478"/>
+  <path d="M873 262 a14 10 0 0 1 28 0" fill="#5a6478"/>
+  <text x="887" y="300" text-anchor="middle" font-size="14" fill="#5a6478">same conversation</text>
+
+  <!-- scheduler -->
+  <rect x="777" y="322" width="220" height="46" rx="10" fill="#ffffff" stroke="#8b5cf6" stroke-width="2.5"/>
+  <text x="887" y="351" text-anchor="middle" font-size="16" font-weight="700" fill="#6d28d9">Inference scheduler</text>
+  <line x1="887" y1="274" x2="887" y2="316" stroke="#9aa3b5" stroke-width="2" marker-end="url(#arrGray)"/>
+
+  <!-- arrows: both turns to pod A -->
+  <path d="M837 368 C 775 398 735 428 715 466" fill="none" stroke="#10b981" stroke-width="3" marker-end="url(#arrGreen)"/>
+  <path d="M857 372 C 800 410 762 438 733 470" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arrGreen)"/>
+  <text x="742" y="404" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" font-weight="700" fill="#047857">turn 1 + 2</text>
+
+  <!-- pods -->
+  <g>
+    <rect x="643" y="472" width="140" height="118" rx="14" fill="#ffffff" stroke="#10b981" stroke-width="2.5"/>
+    <text x="713" y="502" text-anchor="middle" font-size="15" font-weight="700" fill="#0b1020">GPU pod A</text>
+    <rect x="659" y="516" width="108" height="30" rx="8" fill="#ecfdf5" stroke="#6ee7b7"/>
+    <text x="713" y="536" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="12" fill="#047857">cache: warm</text>
+    <text x="713" y="574" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">picks up instantly</text>
+  </g>
+  <g>
+    <rect x="817" y="472" width="140" height="118" rx="14" fill="#ffffff" stroke="#e5e9f2" stroke-width="2"/>
+    <text x="887" y="502" text-anchor="middle" font-size="15" font-weight="700" fill="#0b1020">GPU pod B</text>
+    <rect x="833" y="516" width="108" height="30" rx="8" fill="#f7f8fc" stroke="#e5e9f2"/>
+    <text x="887" y="536" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="12" fill="#5a6478">serves others</text>
+    <text x="887" y="574" text-anchor="middle" font-size="12" fill="#5a6478">fully utilized</text>
+  </g>
+  <g>
+    <rect x="991" y="472" width="140" height="118" rx="14" fill="#ffffff" stroke="#e5e9f2" stroke-width="2"/>
+    <text x="1061" y="502" text-anchor="middle" font-size="15" font-weight="700" fill="#0b1020">GPU pod C</text>
+    <rect x="1007" y="516" width="108" height="30" rx="8" fill="#f7f8fc" stroke="#e5e9f2"/>
+    <text x="1061" y="536" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="12" fill="#5a6478">serves others</text>
+    <text x="1061" y="574" text-anchor="middle" font-size="12" fill="#5a6478">fully utilized</text>
+  </g>
+
+  <!-- outcome -->
+  <rect x="643" y="622" width="488" height="88" rx="14" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <text x="667" y="656" font-size="16" font-weight="700" fill="#047857">&#10003;  Requests land where their context already lives</text>
+  <text x="667" y="686" font-size="14" fill="#065f46">Cache reused · faster first token · same hardware</text>
+
+  <!-- footer analogy -->
+  <rect x="40" y="770" width="1120" height="72" rx="16" fill="#f3eefe"/>
+  <text x="600" y="802" text-anchor="middle" font-size="17" fill="#0b1020" font-weight="600">Like a call center that connects you to the agent who already knows your case,</text>
+  <text x="600" y="828" text-anchor="middle" font-size="17" fill="#6d28d9" font-weight="700">instead of making you repeat everything to a stranger.</text>
+</svg>

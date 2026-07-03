@@ -1,0 +1,83 @@
+<svg viewBox="0 0 1200 680" xmlns="http://www.w3.org/2000/svg" font-family="'Space Grotesk', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="brand3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.55" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#e879f9"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="680" fill="#ffffff"/>
+
+  <text x="600" y="56" text-anchor="middle" font-size="34" font-weight="700" fill="#0b1020">What llm-d brings to the table</text>
+  <text x="600" y="90" text-anchor="middle" font-size="17" fill="#5a6478">A Kubernetes-native distributed inference stack built on vLLM and the Inference Gateway</text>
+
+  <!-- pillar 1 -->
+  <g>
+    <rect x="48" y="124" width="352" height="242" rx="18" fill="#f7f8fc" stroke="#e5e9f2" stroke-width="2"/>
+    <rect x="48" y="124" width="352" height="8" rx="4" fill="#22d3ee"/>
+    <circle cx="96" cy="184" r="24" fill="#e0f7fd"/>
+    <path d="M84 184 h24 M96 172 v24 M87 175 l18 18 M105 175 l-18 18" stroke="#0891b2" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <text x="140" y="178" font-size="20" font-weight="700" fill="#0b1020">KV-cache aware</text>
+    <text x="140" y="202" font-size="20" font-weight="700" fill="#0b1020">routing</text>
+    <text x="72" y="248" font-size="15" fill="#5a6478">Every request lands on the replica</text>
+    <text x="72" y="272" font-size="15" fill="#5a6478">that already holds its context, so</text>
+    <text x="72" y="296" font-size="15" fill="#5a6478">prefixes are reused, not recomputed.</text>
+    <text x="72" y="336" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#0891b2" font-weight="700">reuse &#62; recompute</text>
+  </g>
+
+  <!-- pillar 2 -->
+  <g>
+    <rect x="424" y="124" width="352" height="242" rx="18" fill="#f7f8fc" stroke="#e5e9f2" stroke-width="2"/>
+    <rect x="424" y="124" width="352" height="8" rx="4" fill="#8b5cf6"/>
+    <circle cx="472" cy="184" r="24" fill="#f3eefe"/>
+    <rect x="460" y="174" width="10" height="20" rx="2" fill="#7c3aed"/>
+    <rect x="474" y="174" width="10" height="20" rx="2" fill="#c4b5fd"/>
+    <text x="516" y="178" font-size="20" font-weight="700" fill="#0b1020">Disaggregated</text>
+    <text x="516" y="202" font-size="20" font-weight="700" fill="#0b1020">prefill &#38; decode</text>
+    <text x="448" y="248" font-size="15" fill="#5a6478">Prompt processing and token</text>
+    <text x="448" y="272" font-size="15" fill="#5a6478">generation run on separate workers,</text>
+    <text x="448" y="296" font-size="15" fill="#5a6478">each scaled to what it&#8217;s good at.</text>
+    <text x="448" y="336" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#6d28d9" font-weight="700">right work, right GPU</text>
+  </g>
+
+  <!-- pillar 3 -->
+  <g>
+    <rect x="800" y="124" width="352" height="242" rx="18" fill="#f7f8fc" stroke="#e5e9f2" stroke-width="2"/>
+    <rect x="800" y="124" width="352" height="8" rx="4" fill="#e879f9"/>
+    <circle cx="848" cy="184" r="24" fill="#fdf0fe"/>
+    <path d="M848 168 l14 8 v16 l-14 8 -14 -8 v-16 z" fill="none" stroke="#c026d3" stroke-width="2.5"/>
+    <circle cx="848" cy="184" r="4" fill="#c026d3"/>
+    <text x="892" y="178" font-size="20" font-weight="700" fill="#0b1020">Kubernetes-native</text>
+    <text x="892" y="202" font-size="20" font-weight="700" fill="#0b1020">operations</text>
+    <text x="824" y="248" font-size="15" fill="#5a6478">Plugs into the Inference Gateway,</text>
+    <text x="824" y="272" font-size="15" fill="#5a6478">so ops teams run AI with the same</text>
+    <text x="824" y="296" font-size="15" fill="#5a6478">tooling they already trust.</text>
+    <text x="824" y="336" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#c026d3" font-weight="700">no new ops playbook</text>
+  </g>
+
+  <!-- stats band -->
+  <rect x="48" y="398" width="1104" height="150" rx="18" fill="#0b1020"/>
+  <text x="232" y="466" text-anchor="middle" font-size="52" font-weight="800" fill="url(#brand3)">3&#215;</text>
+  <text x="232" y="500" text-anchor="middle" font-size="15" fill="#c7cddb">output throughput vs</text>
+  <text x="232" y="522" text-anchor="middle" font-size="15" fill="#c7cddb">round-robin routing</text>
+
+  <line x1="416" y1="428" x2="416" y2="518" stroke="#2a3050" stroke-width="1.5"/>
+
+  <text x="600" y="466" text-anchor="middle" font-size="52" font-weight="800" fill="url(#brand3)">2&#215;</text>
+  <text x="600" y="500" text-anchor="middle" font-size="15" fill="#c7cddb">faster time to</text>
+  <text x="600" y="522" text-anchor="middle" font-size="15" fill="#c7cddb">first token</text>
+
+  <line x1="784" y1="428" x2="784" y2="518" stroke="#2a3050" stroke-width="1.5"/>
+
+  <text x="968" y="466" text-anchor="middle" font-size="52" font-weight="800" fill="url(#brand3)">+0</text>
+  <text x="968" y="500" text-anchor="middle" font-size="15" fill="#c7cddb">extra GPUs, bigger models,</text>
+  <text x="968" y="522" text-anchor="middle" font-size="15" fill="#c7cddb">or hardware upgrades</text>
+
+  <!-- benchmark footnote -->
+  <text x="600" y="572" text-anchor="middle" font-size="12.5" fill="#9aa3b5">llm-d project benchmarks: prefix-cache-aware routing vs round-robin · Llama 3.1 70B on 4&#215; AMD MI300X</text>
+
+  <!-- credit -->
+  <text x="600" y="606" text-anchor="middle" font-size="15" fill="#5a6478">Open source, founded by <tspan font-weight="700" fill="#0b1020">Red Hat</tspan> with Google Cloud, IBM Research, CoreWeave &#38; NVIDIA</text>
+  <text x="600" y="634" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="13" fill="#7c3aed" font-weight="700">CNCF sandbox project since March 2026 · github.com/llm-d/llm-d</text>
+</svg>

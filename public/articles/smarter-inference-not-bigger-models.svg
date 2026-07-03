@@ -1,0 +1,84 @@
+<svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" font-family="'Space Grotesk', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.55" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#e879f9"/>
+    </linearGradient>
+    <radialGradient id="glowV" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#7c3aed" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowC" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="gridD" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#1a2142" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="fadeDot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1020" stop-opacity="0"/>
+      <stop offset="1" stop-color="#0b1020" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="1280" height="720" fill="#0b1020"/>
+  <rect width="1280" height="720" fill="url(#gridD)"/>
+  <ellipse cx="1060" cy="120" rx="520" ry="380" fill="url(#glowV)"/>
+  <ellipse cx="160" cy="640" rx="480" ry="340" fill="url(#glowC)"/>
+
+  <!-- llm-d badge -->
+  <rect x="1080" y="64" width="116" height="44" rx="22" fill="#131a35" stroke="#2a3050" stroke-width="1.5"/>
+  <circle cx="1110" cy="86" r="6" fill="url(#brand)"/>
+  <text x="1126" y="93" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="19" font-weight="700" fill="#e6e9f5">llm-d</text>
+
+  <!-- kicker -->
+  <text x="90" y="132" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="20" letter-spacing="6" fill="#22d3ee" font-weight="700">AI IN PRACTICE</text>
+
+  <!-- headline -->
+  <text x="86" y="228" font-size="60" font-weight="700" fill="#f4f6ff">The future of enterprise AI</text>
+  <text x="86" y="302" font-size="60" font-weight="700" fill="#f4f6ff">won&#8217;t be won by bigger models.</text>
+  <text x="86" y="408" font-size="66" font-weight="800" fill="url(#brand)">It&#8217;ll be won by smarter inference.</text>
+
+  <!-- routing motif -->
+  <g>
+    <!-- incoming requests -->
+    <circle cx="130" cy="562" r="9" fill="#22d3ee"/>
+    <circle cx="108" cy="602" r="7" fill="#8b5cf6"/>
+    <circle cx="134" cy="642" r="8" fill="#e879f9"/>
+    <path d="M142 562 C 240 562 280 596 356 599" fill="none" stroke="#22d3ee" stroke-width="2.5" opacity="0.75"/>
+    <path d="M118 602 C 210 602 270 602 356 602" fill="none" stroke="#8b5cf6" stroke-width="2.5" opacity="0.75"/>
+    <path d="M146 642 C 240 642 280 608 356 605" fill="none" stroke="#e879f9" stroke-width="2.5" opacity="0.75"/>
+
+    <!-- scheduler -->
+    <rect x="360" y="570" width="236" height="64" rx="16" fill="#131a35" stroke="url(#brand)" stroke-width="2"/>
+    <text x="478" y="598" text-anchor="middle" font-size="18" font-weight="700" fill="#f4f6ff">inference scheduler</text>
+    <text x="478" y="620" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="12" fill="#8b93ad">knows where the cache lives</text>
+
+    <!-- routes to pods -->
+    <path d="M596 588 C 680 570 720 546 786 540" fill="none" stroke="#2a3050" stroke-width="2.5" stroke-dasharray="6 6"/>
+    <path d="M596 602 C 690 602 720 602 786 602" fill="none" stroke="url(#brand)" stroke-width="4"/>
+    <path d="M596 616 C 680 634 720 658 786 664" fill="none" stroke="#2a3050" stroke-width="2.5" stroke-dasharray="6 6"/>
+
+    <!-- pods -->
+    <g font-family="'JetBrains Mono', ui-monospace, monospace" font-size="14">
+      <rect x="790" y="514" width="196" height="50" rx="12" fill="#101731" stroke="#2a3050" stroke-width="1.5"/>
+      <circle cx="816" cy="539" r="5" fill="#3a4266"/>
+      <text x="834" y="545" fill="#8b93ad">gpu pod · cold</text>
+
+      <rect x="790" y="577" width="196" height="50" rx="12" fill="#151d3d" stroke="url(#brand)" stroke-width="2.5"/>
+      <circle cx="816" cy="602" r="5" fill="#22d3ee"/>
+      <text x="834" y="608" fill="#f4f6ff" font-weight="700">gpu pod · warm</text>
+
+      <rect x="790" y="640" width="196" height="50" rx="12" fill="#101731" stroke="#2a3050" stroke-width="1.5"/>
+      <circle cx="816" cy="665" r="5" fill="#3a4266"/>
+      <text x="834" y="671" fill="#8b93ad">gpu pod · cold</text>
+    </g>
+
+    <!-- cache hit tag -->
+    <rect x="1022" y="580" width="150" height="44" rx="22" fill="#131a35" stroke="#22d3ee" stroke-width="1.5"/>
+    <text x="1097" y="608" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15" font-weight="700" fill="#22d3ee">cache hit &#10003;</text>
+    <path d="M986 602 L1018 602" stroke="#22d3ee" stroke-width="2.5"/>
+  </g>
+</svg>
