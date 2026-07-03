@@ -1,44 +1,63 @@
 ---
-title: "Putting a multi-source RAG agent inside Claude, ChatGPT, and Cursor"
-excerpt: "Wrapping an existing FastAPI and pgvector backend as one MCP App with Skybridge, and where the abstraction leaked."
+title: "MCP Apps, explained by building one"
+excerpt: "What the first official MCP extension changes about tool results, and what porting a production RAG agent into Claude, ChatGPT, and Cursor taught me about where it leaks."
 category: "AI in practice"
 author: vivek-raj
-coverImage: "/articles/one-mcp-app-three-ai-clients.png"
+coverImage: "/articles/01-mcp-apps-hero.webp"
 date: 2026-07-02
 readingTime: "9 min read"
 ---
 
-A plain MCP server would have gotten our RAG agent into every AI client in an afternoon. I spent days building an MCP App instead, and this post is about why that was the right call and what it cost.
+Every MCP tool call ends the same way: text goes back to the model, and the model decides what the user sees. That has been the ceiling on the protocol since it shipped. You can build the best retrieval pipeline in the world behind a tool, and the last hop is still a language model paraphrasing your output into chat prose.
 
-The agent itself was already running in production, behind a chat bubble on our documentation site. It embedded queries with OpenAI's text-embedding-3, reranked with Jina, fused results from four surfaces (docs, a Storybook component library, a set of video tutorials, and a marketplace) with reciprocal rank fusion, and streamed cited answers over NDJSON. pgvector underneath, FastAPI in front, Claude doing the synthesis. The retrieval was good.
+MCP Apps is the first official extension to the Model Context Protocol, and it removes that ceiling. A tool can now return an actual interface, rendered inside the conversation. I spent time porting a production RAG agent into it, running the same widget in Claude, ChatGPT, and Cursor from one codebase, so this is both an explanation of the extension and a field report on where it holds and where it leaks.
 
-So reach was genuinely the easy part. The retrieval ran behind an API, and wrapping it as a plain MCP server would let any client call it. Claude, Cursor, an IDE agent, all of them could hit the tool and get an answer.
+## The problem it exists to solve
 
-The catch is what a plain MCP tool hands back: text. The model calls your tool, reads the result, and paraphrases it. The moment that happens you lose what made the docs experience worth building. The citation cards you can click. The tutorial result that opens at the exact second in the video. The per-source provenance. Paraphrased citations also drift: the model drops a link, merges two sources, or restates a step slightly wrong, and a grounded answer ends up one hop from its grounding.
+MCP standardized how models call tools: you expose a function, the model invokes it, you return text or structured JSON. This works well when the output is an answer the model should reason about. It works badly when the output has structure the user needs intact.
 
-MCP Apps are a different bet. Instead of handing the model text, you hand the client an interface. The same rendered, cited, interactive panel shows up in every host, and the citations stay exact because the UI carries them, not the model's summary. That is the reason to reach for an MCP App over a plain MCP server, and it is what I wanted to test on a real retrieval backend.
+Our case makes it concrete. We run a multi-source RAG agent behind our documentation site. It embeds queries with OpenAI's text-embedding-3, reranks with Jina, fuses results from four surfaces (docs, a Storybook component library, video tutorials, and a marketplace) with reciprocal rank fusion, and returns cited answers. pgvector underneath, FastAPI in front. The value is not just the answer text. It is the citation cards you can click, the tutorial video that opens at the exact second, the per-source provenance.
 
-## What MCP Apps actually is
+Wrap that as a plain MCP tool and any client can call it. Reach is a solved problem. But everything structured about the result dies in the last hop. The model reads your tool output and re-narrates it: it drops a link, merges two sources, restates a step slightly wrong. Paraphrased citations drift, and a grounded answer ends up one hop away from its grounding. For a retrieval product, that hop is the difference between "cited" and "vibes."
 
-In January 2026 the MCP project shipped its first official extension, MCP Apps. It was built by the MCP team together with OpenAI and the MCP-UI community, on top of earlier work from the OpenAI Apps SDK and MCP-UI. The mechanic is small: a tool declares a `ui://` resource that holds an HTML interface, the host renders it in a sandboxed iframe when the tool runs, and the UI and host can talk both ways. Claude, ChatGPT, VS Code, Goose, and Cursor have all shipped support. The finalized spec is due July 2026, but the extension has been usable since the January release.
+<figure>
+  <img src="/articles/02-mcp-apps-plain-vs-app.webp" alt="A plain MCP tool returns text the model paraphrases, so citations drift. An MCP App returns an interface, so citations stay exact." />
+  <figcaption>Same backend, two ways to return the result.</figcaption>
+</figure>
 
-In plain terms: a tool can return a real interface, rendered inside the chat, that runs in more than one client without client-specific code. Whether that portability actually holds was the other thing I wanted to find out, since "write once, run everywhere" has disappointed me before.
+## How the extension actually works
 
-## Where Skybridge fits
+The mechanic is small, which is why it composes well. Three pieces:
 
-The spec defines what an MCP App is. It does not make building one pleasant. [Skybridge](https://github.com/alpic-ai/skybridge) is an open-source framework from Alpic that does. It is TypeScript and React. You define a tool on the server, write a React view, and it connects them with end-to-end type inference, the way tRPC connects a backend to a frontend.
+First, a tool declares a UI resource: a `ui://` URI pointing at an HTML template the server ships. The template is pre-declared rather than generated per call, which matters for security. The host can inspect it before ever rendering it.
 
-One detail set my architecture. Skybridge is TypeScript and my backend is Python. I was not going to port the retrieval pipeline to Node to satisfy a UI framework. So a thin Skybridge server sits in front, owns the React view, and calls the existing FastAPI service over HTTP. The Python side keeps doing what it already did. Skybridge gives it a face and a way into other clients.
+Second, when the model calls the tool, the host fetches that resource and renders it in a sandboxed iframe inside the conversation. Your tool response carries the data (`structuredContent` for the model and the view, optional `_meta` for view-only payloads the model never sees).
 
-## The idea that makes the rest click
+Third, the iframe and the host talk both ways over JSON-RPC. The host pushes tool results into the view. The view can request things from the host: call another tool, open an external link, persist state. Every one of those requests is mediated. The UI cannot fetch arbitrary URLs or invoke tools silently; network and asset access is constrained by CSP allowlists the server declares, and hosts can require user consent for UI-initiated calls.
 
-Skybridge's docs call it context asymmetry. There are three participants in an MCP App, not two: the user, the model, and the UI, and they do not see the same things. The view runs client-side in a sandbox, so the model cannot see what the user clicked. The structured data you return is for the model, so the user never sees it raw.
+![The server declares a ui:// template; the host renders it in a sandboxed iframe; data flows in and mediated requests flow out over JSON-RPC.](/articles/03-mcp-apps-how-it-works.webp)
 
-Every design choice reduces to one question. Who needs to see this, and when. For a RAG answer that meant the model needs the answer text to reason over, and the user needs the rendered version with citation cards and video thumbnails. Two outputs from one tool call.
+The lineage explains the design. OpenAI shipped a proprietary version of this idea in its Apps SDK; the MCP-UI community project explored the same territory. In January 2026 the MCP maintainers, OpenAI, and MCP-UI merged those efforts into MCP Apps, the first official protocol extension, with the finalized spec landing July 2026. Claude, ChatGPT, VS Code, Goose, and Cursor have all shipped support.
 
-## The version I shipped first was wrong
+One property is worth calling out because it de-risks adoption: degradation is graceful. A host that does not support Apps just ignores the UI resource and uses the text output like any normal tool. You lose the interface, not the functionality.
 
-The tool itself is boring, which is the point:
+## The model, the user, and the UI see different things
+
+The conceptual core of building an App is what the docs call context asymmetry, and it is the part that changes how you design.
+
+There are three participants, not two. The user sees the rendered iframe. The model sees the tool response. The UI sees its own state. None of them automatically sees the others. The model does not know what the user clicked unless the view syncs it back. The user never sees the raw structured data. The view cannot know the conversation context beyond what flows through the tool call.
+
+![Three participants: the user sees the iframe, the model sees structuredContent, the UI owns its own state.](/articles/04-mcp-apps-three-participants.webp)
+
+Every design decision reduces to one question: who needs to see this, and when. For a RAG answer, the model needs the full answer text so it can reason about follow-ups. The user needs the rendered version with citation cards and video thumbnails. Two outputs from one tool call, deliberately different.
+
+Get that split wrong and the failure modes are strange, as I found out.
+
+## The case study: what we built and what broke
+
+The architecture decision came first. Our backend is Python, and the App layer I used is TypeScript. Porting a retrieval pipeline to Node to satisfy a UI layer would be backwards, so a thin TypeScript server sits in front, owns the React view, and calls the existing FastAPI service over HTTP. The Python side did not change at all.
+
+The tool definition is almost boring:
 
 ```ts
 server.registerTool(
@@ -52,36 +71,43 @@ server.registerTool(
 );
 ```
 
-The `view` field is the whole trick. Everything else is a normal MCP tool.
+My first version got the context asymmetry wrong, and it is the most instructive mistake I made. Our backend streams answers over NDJSON, so I had the widget open the connection itself and render tokens as they arrived, while the tool returned immediately with a "rendering in the panel" placeholder. It demoed beautifully.
 
-My backend streams over NDJSON, so my first instinct was to keep streaming on the client. The widget opened the connection itself and rendered tokens as they arrived, and the tool returned immediately with a "rendering in the panel" placeholder. It demoed beautifully. The answer typed itself out, the cards filled in.
+Then I watched the model use it. Because the tool returned no real answer, the model did not believe it had one. It called the tool again with a reworded query. Then a third time. The widget rendered three times in one turn, and the model started opening the cited doc URLs on its own to recover the content my tool had withheld. My streaming had made the model blind to its own result, which is exactly the desync the three-participant model warns about.
 
-Then I watched the model use it. Because the tool returned no real answer, the model did not believe it had one. It called `ragSearch` again with a slightly reworded query. Then a third time. I was getting the widget rendered three times in a single turn. It also started opening the cited doc URLs on its own to recover the content the tool had withheld. My nice streaming had made the model blind to its own result, which is the one failure mode an MCP App is supposed to avoid.
+The fix: move the backend call server-side, return the complete answer in the tool response. The model gets a real result, calls once, stops chasing links. I traded live token streaming for a model that understands what it just did. Not a close call.
 
-The fix was to move the backend call server-side. The tool now calls the search endpoint, waits for the complete answer, and returns it in the response. The model gets a real answer, calls once, and stops trying to read the links itself. I gave up live token streaming for a model that understands what it just did. In a demo that reads as a downgrade. For correctness it was not a close call.
+Two more edges cost real time, and both are invisible in local dev:
 
-## The two bugs that cost the most time
+CORS. While the widget still fetched the backend directly, everything worked locally and rendered blank everywhere else. The cause: in local dev the widget runs on localhost, which our FastAPI CORS config allowed. Every real host renders the iframe from a different origin, sometimes an opaque `null` one, and the browser blocked the fetch. Not the network. The browser. Moving the call server-side dissolved this whole class of problem, because a server has no origin. Where the backend call lives is the single most consequential decision in an MCP App.
 
-The blank widget. I changed the shape of my view state between versions, and Skybridge persists view state on the host and restores it. The restored object was the old shape, missing a field the new code read, so the view threw on every render and showed nothing. I was sure my deploy was broken until I opened the iframe console and saw a one-line `undefined` error. Read view state defensively. It behaves like a cache that survives your schema changes, and the docs do not warn you about that.
+Persisted view state. Hosts persist your view's state and restore it across runs. I changed the shape of that state between versions, the restored object was missing a field the new code read, and the view crashed to blank on every render. Treat restored view state like a cache: it survives your schema changes, and nothing warns you.
 
-CORS, which I want to call out because the cause is sneaky and it cost me an afternoon. While I was still fetching from the widget, the app worked in local dev and rendered a blank answer everywhere else. I chased reachability for too long. The real cause: in local dev the widget runs on localhost, which my FastAPI CORS config allowed. Every real client renders the widget from a different iframe origin, sometimes an opaque `null` one, and the browser blocked the fetch. Not the network. The browser. The dev emulator hides this entirely.
+## The framework layer: Skybridge
 
-The useful part is that these two connect. Moving the call server-side, the fix for the streaming problem, also made the CORS problem disappear, because the server has no origin. Two of my worst edges had a single resolution. If your widget fetches your backend, cross-client behavior depends on your CORS config. If the server fetches it, the question never comes up. Decide where the call lives deliberately.
+You can build all of the above against the raw spec. I used [Skybridge](https://github.com/alpic-ai/skybridge), an open-source TypeScript and React framework from Alpic, and the honest assessment is that it earns its place for two reasons.
 
-## What held up
+The first is the type bridge. It infers types end to end from the tool definition to the React view, the way tRPC connects a backend to a frontend. The day I renamed a field on the tool output, every place in the view that read the old name lit up red before I ran anything. The server is the source of truth and the UI cannot drift from it quietly.
 
-The type bridge earned its keep the day I renamed a field on the tool output. Every place in the view that read the old name lit up red before I ran anything. That is the tRPC-style inference working as advertised: the server is the source of truth and the UI cannot drift from it quietly.
+The second is that it abstracts the runtime split. ChatGPT renders Apps through its `window.openai` runtime; Claude, Cursor, and the rest speak the open spec. Skybridge papers over that gap, and I shipped one React component with zero per-client branches. The dev loop is good too: a local emulator, hot reload, and a tunnel for testing inside real clients while you build.
 
-Write once held too, with the asterisk above. One React component, the same widget in Claude, ChatGPT, and Cursor, no per-client branches in my code. Skybridge papers over the gap between ChatGPT's `window.openai` runtime and the open spec the other clients use, and I never touched either directly.
+<figure>
+  <img src="/articles/05-mcp-apps-three-clients.webp" alt="The same rendered panel in Claude, ChatGPT, and Cursor, from one React component." />
+  <figcaption>One component, three clients. No per-client code.</figcaption>
+</figure>
 
-One smaller gotcha: a plain anchor tag does nothing inside the sandbox. External links go through `useOpenExternal`, which routes the open request to the host. My citation cards refused to click until I switched. The docs URLs from the backend were also relative, so I had to resolve them against the docs base before any of it worked.
+Where it leaks: there is no streaming primitive (my whole streaming misadventure was me working around that), the view-state persistence behavior is undocumented enough to bite, and small things surprise you, like a plain anchor tag doing nothing inside the sandbox. External links must go through a `useOpenExternal` hook that routes through the host. None of these are disqualifying. All of them are the difference between the pitch and the practice.
 
-## Would I do it again
+## What I would tell you before you build one
 
-Yes, with the deploy-first tax priced in.
+Use a plain MCP server when your output is prose the model should absorb and re-express. Reach for an App when the output has structure that must survive contact with the model: citations, tables, media, anything clickable, anything the user interacts with after the answer lands.
 
-If you have a backend that already works and you want it to show up as a real interface inside the clients people use, Skybridge gets you there faster than hand-rolling MCP UI per host, and the type safety pays for itself the first time you rename something. Budget a day for the three edges the local emulator hides: where the backend call lives, CORS, and stale view state. None are hard once you have seen them. All are invisible until you deploy.
+If you do build one:
 
-The outcome is what kept me on it. The same retrieval engine, the same cited answers, now rendering inside Claude, ChatGPT, and Cursor from one codebase, wherever the person asking happens to be working.
+Put the backend call on the server, not in the widget. It keeps the model in sync with the result and makes CORS someone else's problem. Almost everything I got wrong traces back to violating this.
 
-If you are porting an existing backend into an MCP App, the first decision to get right is the one I got wrong: put the backend call on the server, not in the widget. Most of the rest follows from that.
+Design for three participants from the start. Decide explicitly what the model sees, what the user sees, and what state the view owns. The `structuredContent` versus `_meta` split in the spec exists precisely for this.
+
+Budget a day for the deploy-first tax. The local emulator hides origin behavior, state persistence, and host differences. Nothing counts as tested until it has rendered inside a real client.
+
+The payoff is real. The same retrieval engine, the same cited answers, now rendering as the same interactive panel in Claude, ChatGPT, and Cursor, from one codebase. The protocol finally has a way to ship an experience instead of a paragraph. It just expects you to understand who sees what.
