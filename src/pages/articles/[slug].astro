@@ -58,7 +58,13 @@ const schema = [
   },
 ]
 ---
-<Layout title={`${title} · TalkBeyondCode`} description={excerpt} ogType="article" schema={schema}>
+<Layout
+  title={`${title} · TalkBeyondCode`}
+  description={excerpt}
+  ogType="article"
+  ogImage={`/og/articles/${entry.id}.png`}
+  schema={schema}
+>
   <article class="mx-auto max-w-3xl px-6 py-16 md:py-20">
     <a
       href="/articles"
