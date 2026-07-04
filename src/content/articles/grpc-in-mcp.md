@@ -1,6 +1,6 @@
 ---
 title: "gRPC in MCP, explained from the transport up"
-excerpt: "Google wants gRPC as a native MCP transport. The spec proposal got deferred, the SDK PR got closed, and the idea is still winning. Here is how."
+excerpt: "Enterprises want MCP to speak gRPC without a translation layer."
 category: "Architecture"
 author: vivek-raj
 coverImage: "/articles/grpc-01-hero.webp"
@@ -8,7 +8,8 @@ date: 2026-07-04
 readingTime: "9 min read"
 ---
 
-I first ran into this at KubeCon India 2026 in Mumbai, in a talk by Pawan Bhardwaj from Google. The pitch fit in one sentence: MCP should be able to speak gRPC natively, not through a translation layer. I posted a short take on it afterwards, and then went digging through the repos, the spec proposal, and the SDK discussions to see how real it is. This article is what I found. The short version: the code is further along than I expected, the politics are messier than the talk let on, and the mechanism that will actually ship it is not the one anyone was arguing about.
+I first ran into this at KubeCon India 2026 in Mumbai, in a talk by a Google engineer. The pitch fit in one sentence: MCP should be able to speak gRPC natively, not through a translation layer. I posted a short take on it afterwards, and then went digging through the repos, the spec proposal, and the SDK discussions to see how real it is. This article is what I found. The short version: the code is further along than I expected, the politics are messier than the talk let on, and the mechanism that will actually ship it is not the one anyone was arguing about.
+
 
 ## A transport history in four steps
 
@@ -108,4 +109,4 @@ Watch three things: the stable V2 SDK releases targeted for late July, the Pytho
 - [SEP-2598: Pluggable Transports](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2598) (deferred May 2026)
 - [Python SDK PR #1591: pluggable transport abstractions](https://github.com/modelcontextprotocol/python-sdk/pull/1591) (closed January 2026)
 - "Path to V2 for MCP SDKs," Max Isbey, MCP Dev Summit NY, April 2026
-- Pawan Bhardwaj's talk at KubeCon India 2026, Mumbai
+- Google's session on gRPC as an MCP transport, KubeCon India 2026, Mumbai
