@@ -7,8 +7,12 @@ interface Props {
   id: string
   size?: number
   class?: string
+  /* When true, the three inner waveform bars carry `data-wave-bar` so a
+     parent can animate them like a live equalizer. Opt-in — only one
+     instance per page should be animated (the hero). */
+  animated?: boolean
 }
-const { id, size = 36, class: className = '' } = Astro.props
+const { id, size = 36, class: className = '', animated = false } = Astro.props
 const width = Math.round((size * 152) / 104)
 const gl = `tbc-${id}-l`
 const gr = `tbc-${id}-r`
@@ -23,9 +27,9 @@ const gr = `tbc-${id}-r`
 >
   <path d="M52 8L8 52L52 96" stroke={`url(#${gl})`} stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
   <path d="M100 8L144 52L100 96" stroke={`url(#${gr})`} stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M56 36V68" stroke="#0B1220" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M76 18V86" stroke="#0B1220" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M96 36V68" stroke="#0B1220" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-wave-bar={animated ? '' : undefined} d="M56 36V68" stroke="#0B1220" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-wave-bar={animated ? '' : undefined} d="M76 18V86" stroke="#0B1220" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+  <path data-wave-bar={animated ? '' : undefined} d="M96 36V68" stroke="#0B1220" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
   <defs>
     <linearGradient id={gl} x1="8" y1="8" x2="78.4" y2="43.2" gradientUnits="userSpaceOnUse">
       <stop stop-color="#35C4DA" />
