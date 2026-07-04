@@ -89,7 +89,7 @@ export const episodes: Episode[] = [
 /* ── Articles ────────────────────────────────────────────────────────────
    Article content now lives as Markdown in src/content/articles/*.md
    (Astro Content Collections). Only the filter categories stay here. */
-export const articleCategories = ['All', 'AI in practice', 'Engineering culture', 'Career', 'Tooling']
+export const articleCategories = ['All', 'AI in practice', 'Engineering culture', 'Career', 'Tooling', 'Architecture']
 
 /* ── Signal (links + notes feed) ─────────────────────────────────────── */
 export type SignalItem = {

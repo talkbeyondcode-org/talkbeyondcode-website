@@ -30,7 +30,7 @@ const articles = defineCollection({
   schema: z.object({
     title: z.string(),
     excerpt: z.string(),
-    category: z.enum(['AI in practice', 'Engineering culture', 'Career', 'Tooling']),
+    category: z.enum(['AI in practice', 'Engineering culture', 'Career', 'Tooling', 'Architecture']),
     author: reference('contributors'),
     coverImage: z.string().optional(),
     date: z.coerce.date(),
