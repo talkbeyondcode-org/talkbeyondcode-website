@@ -41,8 +41,6 @@ const dropArticles = sortedArticles.slice(0, Math.max(0, 3 - dropEpisodes.length
   to: `/articles/${entry.id}`,
 }))
 const drops = [...dropEpisodes, ...dropArticles].slice(0, 3)
-
-const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
 ---
 <Layout
   title="TalkBeyondCode: Engineering conversations beyond the code"
@@ -99,20 +97,11 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
       </div>
 
       {/* the nav already carries the logo on mobile; showing it again here reads
-          as two logos stacked, so the hero visual is md-and-up only */}
-      <div data-hero class="hidden items-center gap-5 md:flex md:justify-end md:gap-8">
-        <TbcMark id="hero" size={168} class="h-auto w-[clamp(120px,16vw,245px)]" />
-        <div class="flex items-end gap-1.5 md:gap-2" aria-hidden="true">
-          {
-            waveBars.map((h) => (
-              <span
-                data-bar
-                class="w-2.5 rounded-full bg-gradient-to-b from-brand-cyan via-brand-violet to-brand-magenta"
-                style={`height:${h * 96}px`}
-              />
-            ))
-          }
-        </div>
+          as two logos stacked, so the hero visual is md-and-up only. The
+          waveform bars inside the mark animate as a live equalizer — one mark,
+          no separate wave. */}
+      <div data-hero class="hidden md:flex md:justify-end">
+        <TbcMark id="hero" size={200} animated class="h-auto w-[clamp(180px,22vw,320px)]" />
       </div>
     </div>
   </section>
@@ -293,14 +282,30 @@ const waveBars = [0.5, 0.8, 1, 0.65, 1, 0.85, 0.45]
       stagger: 0.08,
       delay: 0.05,
     })
-    gsap.to('[data-bar]', {
-      scaleY: 0.35,
-      transformOrigin: 'center',
-      duration: 0.9,
-      ease: 'sine.inOut',
-      repeat: -1,
-      yoyo: true,
-      stagger: { each: 0.12, from: 'center' },
+    // the three waveform bars inside the hero logo move through a shared set
+    // of equalizer "poses". All bars share the same duration and keyframe
+    // count, so each column below is one coherent pose the trio strikes
+    // together. Pose index 1 is the peaked-center silhouette — both outer
+    // bars well below the tall middle bar, the logo's signature shape — so the
+    // loop always resolves through it. First pose === last for a seamless cycle.
+    const bars = gsap.utils.toArray<SVGElement>('[data-wave-bar]')
+    //                pose:  0     1     2     3     4     5(=0)
+    const poses = [
+      /* left  (56) */ [0.7, 0.4, 0.95, 0.55, 0.8, 0.7],
+      /* middle(76) */ [0.85, 1.0, 0.6, 0.9, 0.5, 0.85],
+      /* right (96) */ [0.7, 0.4, 0.8, 1.0, 0.55, 0.7],
+    ]
+    // scale each bar about the shared vertical centerline (y=52 in the 152x104
+    // viewBox) so it grows/shrinks symmetrically and stays vertically centered.
+    // svgOrigin uses user-space coords — reliable even for zero-width line paths.
+    const originX = [56, 76, 96]
+    bars.forEach((bar, i) => {
+      gsap.to(bar, {
+        keyframes: { scaleY: poses[i], ease: 'sine.inOut' },
+        svgOrigin: `${originX[i]} 52`,
+        duration: 4,
+        repeat: -1,
+      })
     })
   }
 
