@@ -1,0 +1,4 @@
+{
+  "$comment": "Dedupe memory for collect.mjs: normalized URL -> date first surfaced as a candidate. Updated by the script each run and committed with the candidates PR, so merging the PR also records the rejects — deleted candidates don't reappear next week. Entries older than ~6 months are pruned automatically.",
+  "urls": {}
+}

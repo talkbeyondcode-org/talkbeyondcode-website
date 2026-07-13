@@ -3,7 +3,8 @@
    content collection; everything else from ../data. Keeping it in one place
    means the machine-readable surface never drifts from the site content. */
 import { getCollection } from 'astro:content'
-import { creators, episodes, signal, YOUTUBE_URL, CONTACT_EMAIL } from '../data'
+import { creators, episodes, YOUTUBE_URL, CONTACT_EMAIL } from '../data'
+import { publishedSignal, signalDate } from './signal'
 
 export const SITE_URL = 'https://talkbeyondcode.com'
 export const SITE_NAME = 'TalkBeyondCode'
@@ -86,11 +87,12 @@ async function articlesMd(): Promise<string> {
     .join('\n')
 }
 
-function signalMd(): string {
-  return signal
+async function signalMd(): Promise<string> {
+  const items = await publishedSignal()
+  return items
     .map((s) => {
-      const src = s.source ? ` (${s.source.label}: ${s.source.href})` : ''
-      return `- [${s.kind} · ${s.tag} · ${s.date}] ${s.title}${src}\n  ${s.body}`
+      const src = s.data.source ? ` (${s.data.source.label}: ${s.data.source.href})` : ''
+      return `- [${s.data.kind} · ${s.data.tag} · ${signalDate(s.data.date)}] ${s.data.title}${src}\n  ${s.body?.trim() ?? ''}`
     })
     .join('\n')
 }
@@ -119,7 +121,7 @@ export async function pageMarkdown(slug: string): Promise<string> {
     case 'signal':
       return (
         header('Signal: What the channel is tracking') +
-        `Links worth your time and short notes on what we are building, reading and arguing about.\n\n${signalMd()}\n`
+        `Links worth your time and short notes on what we are building, reading and arguing about.\n\n${await signalMd()}\n`
       )
     case 'creators':
       return header('Creators: Four engineers, one mic') + `${creatorsMd()}\n`

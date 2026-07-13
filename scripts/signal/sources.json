@@ -1,0 +1,24 @@
+{
+  "$comment": "Inputs for scripts/signal/collect.mjs. Edit freely — add/remove feeds without touching code. `weight` boosts a source's rank (default 1). `tag` is the default Signal tag suggested for items from that feed.",
+  "feeds": [
+    { "name": "AI News (smol.ai)", "url": "https://news.smol.ai/rss.xml", "tag": "AI", "weight": 3 },
+    { "name": "GitHub Changelog", "url": "https://github.blog/changelog/feed/", "tag": "Tooling", "weight": 2 },
+    { "name": "GitHub Blog", "url": "https://github.blog/feed/", "tag": "Tooling", "weight": 1 },
+    { "name": "OpenAI News", "url": "https://openai.com/news/rss.xml", "tag": "AI", "weight": 2 },
+    { "name": "Vercel", "url": "https://vercel.com/atom", "tag": "Tooling", "weight": 1 },
+    { "name": "Astro", "url": "https://astro.build/rss.xml", "tag": "Tooling", "weight": 1 },
+    { "name": "Node.js Blog", "url": "https://nodejs.org/en/feed/blog.xml", "tag": "Tooling", "weight": 1 },
+    { "name": "TypeScript Blog", "url": "https://devblogs.microsoft.com/typescript/feed/", "tag": "Tooling", "weight": 2 }
+  ],
+  "hackerNews": {
+    "minPoints": 150,
+    "bigStoryPoints": 300,
+    "keywords": [
+      "ai", "llm", "agent", "claude", "gpt", "gemini", "copilot", "model",
+      "typescript", "javascript", "react", "node", "python", "rust",
+      "postgres", "database", "compiler", "framework", "open source",
+      "developer", "engineer", "career", "github", "security"
+    ]
+  },
+  "tags": ["AI", "Tooling", "Career", "Workflow", "Culture", "AI in practice"]
+}
