@@ -8,7 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "signal:collect": "node scripts/signal/collect.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.0",

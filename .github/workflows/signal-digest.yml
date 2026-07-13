@@ -1,0 +1,60 @@
+# Fallback runner for the weekly Signal digest. The primary scheduler is the
+# Hermes agent (which runs scripts/signal/collect.mjs, opens the PR and pings
+# Telegram); this workflow is the manual "run it anyway" button for when Hermes
+# is down or you want an off-cycle digest. Trigger it from the Actions tab.
+#
+# One-time repo setup:
+#   - Secrets → Actions → add ANTHROPIC_API_KEY (optional; without it the
+#     candidates use raw feed excerpts as placeholder notes)
+#   - Settings → Actions → General → enable "Allow GitHub Actions to create
+#     and approve pull requests"
+name: Signal digest (manual fallback)
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: Look-back window in days
+        default: '7'
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # collect.mjs is dependency-free — no npm ci needed.
+      - name: Collect candidates
+        run: node scripts/signal/collect.mjs
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DAYS: ${{ inputs.days }}
+          PR_BODY_PATH: ${{ runner.temp }}/pr-body.md
+
+      - name: Open draft PR
+        run: |
+          if [ -z "$(git status --porcelain src/content/signal scripts/signal/seen.json)" ]; then
+            echo "No new candidates this week — skipping PR."
+            exit 0
+          fi
+          WEEK=$(date +%Y-%m-%d)
+          git config user.name "signal-bot"
+          git config user.email "talkbeyondcode@gmail.com"
+          git checkout -b "signal/$WEEK"
+          git add src/content/signal scripts/signal/seen.json
+          git commit -m "Signal candidates for week of $WEEK"
+          git push -u origin "signal/$WEEK"
+          gh pr create --draft \
+            --title "Signal: week of $WEEK" \
+            --body-file "${{ runner.temp }}/pr-body.md"
+        env:
+          GH_TOKEN: ${{ github.token }}

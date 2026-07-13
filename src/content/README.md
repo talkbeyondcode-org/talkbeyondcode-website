@@ -49,3 +49,41 @@ website: "https://janedoe.dev"       # optional
 
 The filename (`jane-doe.md` → `jane-doe`) is the id you put in an article's
 `author` field. Submit the contributor file and the article in the same PR.
+
+## Signal (the links + notes feed)
+
+Signal items live in `signal/`, one file per item. The frontmatter is the
+metadata; **the file body is the note** — our take on why it matters, in our
+voice. `kind: Link` requires a `source` (always the primary source, never an
+aggregator); `kind: Note` is an original observation with no link.
+
+```md
+---
+kind: Link                    # or: Note
+tag: "AI"                     # AI | Tooling | Career | Workflow | Culture | AI in practice
+title: "What happened"
+date: 2026-07-13
+source:                       # required for Link, omit for Note
+  label: "anthropic.com"
+  href: "https://www.anthropic.com/..."
+draft: true                   # true = hidden from site + feeds; remove to publish
+---
+Two or three sentences on why this matters and what to do about it.
+```
+
+### The weekly digest flow
+
+`scripts/signal/collect.mjs` gathers candidates from the RSS feeds and Hacker
+News filters configured in `scripts/signal/sources.json`, dedupes them against
+`seen.json` and everything already published, and writes the top ~20 as
+`draft: true` files. The Hermes agent runs it weekly and opens a draft PR
+(fallback: the "Signal digest" workflow in the Actions tab). To review:
+
+1. **Delete** the files you don't want. `seen.json` (updated in the same PR)
+   remembers them, so rejects never resurface.
+2. For keepers: **rewrite the note in your own voice** (the generated line is a
+   placeholder, never publish it as-is), check the tag, remove `draft: true`.
+3. Mark the PR ready and merge. Only non-draft items ship.
+
+Hand-written items (especially `kind: Note`) don't need the pipeline — add a
+file directly, any time.

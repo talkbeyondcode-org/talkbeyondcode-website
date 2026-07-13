@@ -1,7 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import PageHeader from '../components/PageHeader.astro'
-import { signal, signalFilters } from '../data'
+import { signalFilters } from '../data'
+import { publishedSignal, signalDate } from '../lib/signal'
+
+const signal = await publishedSignal()
 ---
 <Layout
   title="Signal · TalkBeyondCode"
@@ -32,27 +35,27 @@ import { signal, signalFilters } from '../data'
       {
         signal.map((item) => (
           <li
-            data-kind={item.kind}
-            data-tag={item.tag}
+            data-kind={item.data.kind}
+            data-tag={item.data.tag}
             class="rounded-[16px] border border-line bg-bg px-6 py-5 shadow-[var(--shadow-card)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-card-hover)]"
           >
             <div class="flex items-start justify-between gap-4">
               <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.18em] text-primary">
-                {item.kind} · {item.tag}
+                {item.data.kind} · {item.data.tag}
               </span>
-              <span class="shrink-0 font-mono text-[0.65rem] tracking-[0.1em] text-muted">{item.date}</span>
+              <span class="shrink-0 font-mono text-[0.65rem] tracking-[0.1em] text-muted">{signalDate(item.data.date)}</span>
             </div>
-            <h3 class="mt-2.5 text-base font-bold leading-snug tracking-tight text-ink md:text-lg">{item.title}</h3>
-            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted">{item.body}</p>
+            <h3 class="mt-2.5 text-base font-bold leading-snug tracking-tight text-ink md:text-lg">{item.data.title}</h3>
+            <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted">{item.body?.trim()}</p>
             {
-              item.source ? (
+              item.data.source ? (
                 <a
-                  href={item.source.href}
+                  href={item.data.source.href}
                   target="_blank"
                   rel="noreferrer"
                   class="mt-3 inline-block font-mono text-xs font-medium text-primary transition-colors hover:text-primary-deep"
                 >
-                  {item.source.label} →
+                  {item.data.source.label} →
                 </a>
               ) : (
                 <p class="mt-3 font-mono text-xs text-muted">From the channel</p>

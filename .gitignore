@@ -26,3 +26,6 @@ dist-ssr
 
 # Astro
 .astro/
+
+# Signal collector run artifact (PR body is regenerated every run)
+scripts/signal/.pr-body.md

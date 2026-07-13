@@ -40,4 +40,28 @@ const articles = defineCollection({
   }),
 })
 
-export const collections = { articles, contributors }
+/* Signal items are the curated links+notes feed. One Markdown file per item in
+   src/content/signal/*.md: frontmatter carries the metadata, the file body is
+   the note — our take on why it matters, written in our voice. `kind: Link`
+   requires a `source` (we always point at the primary source); `kind: Note` is
+   an original observation from the channel. The weekly collector script
+   (scripts/signal/collect.mjs) opens PRs with candidate items marked
+   `draft: true`; flipping that to false (or removing it) is the publish step,
+   so an unedited candidate can never ship by accident. */
+const signal = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/signal' }),
+  schema: z
+    .object({
+      kind: z.enum(['Link', 'Note']),
+      tag: z.string(),
+      title: z.string(),
+      date: z.coerce.date(),
+      source: z.object({ label: z.string(), href: z.string().url() }).optional(),
+      draft: z.boolean().default(false),
+    })
+    .refine((item) => item.kind === 'Note' || item.source !== undefined, {
+      message: 'A Link item must have a source — always cite the primary source.',
+    }),
+})
+
+export const collections = { articles, contributors, signal }

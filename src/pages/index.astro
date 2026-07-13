@@ -6,7 +6,10 @@ import TbcMark from '../components/TbcMark.astro'
 import Keycap from '../components/Keycap.astro'
 import Newsletter from '../components/Newsletter.astro'
 import { getCollection, getEntry } from 'astro:content'
-import { signal, creators, episodes } from '../data'
+import { creators, episodes } from '../data'
+import { publishedSignal } from '../lib/signal'
+
+const signal = await publishedSignal()
 
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 
@@ -245,11 +248,11 @@ const drops = [...dropEpisodes, ...dropArticles].slice(0, 3)
             class="flex flex-col rounded-[20px] border border-line bg-bg p-6 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-card-hover)]"
           >
             <span class="font-mono text-[0.65rem] font-bold uppercase tracking-[0.18em] text-primary">
-              {s.kind} · {s.tag}
+              {s.data.kind} · {s.data.tag}
             </span>
-            <h3 class="mt-3 text-base font-bold leading-snug tracking-tight text-ink">{s.title}</h3>
-            <p class="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
-            {s.source && <span class="mt-auto pt-5 font-mono text-xs text-primary">{s.source.label} →</span>}
+            <h3 class="mt-3 text-base font-bold leading-snug tracking-tight text-ink">{s.data.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{s.body?.trim()}</p>
+            {s.data.source && <span class="mt-auto pt-5 font-mono text-xs text-primary">{s.data.source.label} →</span>}
           </a>
         ))
       }
