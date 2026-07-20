@@ -21,29 +21,39 @@ const latestArticles = await Promise.all(
   sortedArticles.slice(0, 3).map(async (entry) => ({ entry, author: (await getEntry(entry.data.author))!.data })),
 )
 
-// "Fresh from the channel" is a real, live feed: the current live episode(s)
-// first, then the newest articles filling the remaining slots.
-const dropEpisodes = episodes
-  .filter((e) => e.live)
-  .map((e) => ({
+// "Fresh from the channel" is a real, live feed: the newest of each stream —
+// one podcast episode, one article, one signal item.
+const latestEpisode = episodes.find((e) => e.live)
+const latestSignal = signal[0]
+const drops = [
+  latestEpisode && {
     kind: 'Podcast',
     date: 'New',
     keycaps: true,
-    title: e.title,
-    blurb: e.meta,
+    title: latestEpisode.title,
+    blurb: latestEpisode.meta,
     cta: 'Watch',
-    to: e.href ?? '/podcast',
-  }))
-const dropArticles = sortedArticles.slice(0, Math.max(0, 3 - dropEpisodes.length)).map((entry) => ({
-  kind: 'Article',
-  date: fmt(entry.data.date),
-  keycaps: false,
-  title: entry.data.title,
-  blurb: entry.data.excerpt,
-  cta: 'Read',
-  to: `/articles/${entry.id}`,
-}))
-const drops = [...dropEpisodes, ...dropArticles].slice(0, 3)
+    to: latestEpisode.href ?? '/podcast',
+  },
+  sortedArticles[0] && {
+    kind: 'Article',
+    date: fmt(sortedArticles[0].data.date),
+    keycaps: false,
+    title: sortedArticles[0].data.title,
+    blurb: sortedArticles[0].data.excerpt,
+    cta: 'Read',
+    to: `/articles/${sortedArticles[0].id}`,
+  },
+  latestSignal && {
+    kind: 'Signal',
+    date: fmt(latestSignal.data.date),
+    keycaps: false,
+    title: latestSignal.data.title,
+    blurb: latestSignal.body?.trim() ?? '',
+    cta: 'View',
+    to: '/signal',
+  },
+].filter((d) => !!d)
 ---
 <Layout
   title="TalkBeyondCode: Engineering conversations beyond the code"

@@ -1,5 +1,6 @@
 export const YOUTUBE_URL = 'https://www.youtube.com/@TalkBeyondCode'
 export const WATCH_EP1_URL = 'https://youtu.be/wDLA1Qlw_Ds'
+export const WATCH_EP2_URL = 'https://youtu.be/Ootr7TEZd5o'
 export const CONTACT_EMAIL = 'talkbeyondcode@gmail.com'
 
 /* ── Creators ────────────────────────────────────────────────────────── */
@@ -75,7 +76,17 @@ export type Episode = {
 // Only real, published episodes live here. Add a new entry when an episode
 // goes live — placeholder/"TBA" rows are intentionally not shipped (they'd
 // leak into the RSS feed and llms.txt as fake episodes).
+// Newest episode first — the podcast page renders in array order and the
+// homepage "Fresh from the channel" feed marks episodes[0] as New.
 export const episodes: Episode[] = [
+  {
+    n: '02',
+    title: 'From QA Engineer to AI-Driven Quality Engineer',
+    meta: 'Guest: Praveen Kumar · SDET @ WaveMaker',
+    status: 'Watch now',
+    live: true,
+    href: WATCH_EP2_URL,
+  },
   {
     n: '01',
     title: 'From Application Developer to AI Engineer',
