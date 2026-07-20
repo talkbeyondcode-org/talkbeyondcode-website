@@ -6,8 +6,9 @@
    Pipeline: fetch RSS/Atom feeds + Hacker News front page → dedupe against
    seen.json and already-published items → rank → (optionally) draft one-line
    summaries with Claude → write candidate Markdown files into
-   src/content/signal/ with `draft: true` so nothing ships until a human edits
-   the note and removes the draft flag.
+   src/content/signal/ with `draft: false` so they render in the PR preview.
+   Candidates still need a human to rewrite the note in their own voice before
+   the PR is merged — the draft flag no longer gates visibility.
 
    This script only writes files. Branching, committing and opening the PR is
    the caller's job (Hermes, GitHub Actions, or you locally) — see the step in
@@ -294,7 +295,7 @@ function candidateMarkdown(c, tag, note, dateStr) {
     'source:',
     `  label: ${yamlString(host)}`,
     `  href: ${yamlString(c.url)}`,
-    'draft: true',
+    'draft: false',
     '---',
     note || '(no summary available — write the note before publishing)',
     '',
@@ -361,12 +362,12 @@ async function main() {
   const prBody = [
     `## Signal candidates — week of ${today}`,
     '',
-    `${written.length} candidates. All are \`draft: true\` — **nothing ships until you edit it.**`,
+    `${written.length} candidates. They render in the preview with \`draft: false\` — **review before merging.**`,
     '',
     'Review flow:',
     '1. Delete the files of candidates you don\'t want (seen.json already remembers them — they won\'t come back).',
-    '2. For keepers: rewrite the note **in your own voice**, check the tag, then remove `draft: true`.',
-    '3. Mark ready for review and merge. Vercel rebuilds; only non-draft items ship.',
+    '2. For keepers: rewrite the note **in your own voice** and check the tag.',
+    '3. Mark ready for review and merge. Vercel rebuilds; every remaining item ships.',
     '',
     '| # | Candidate | Via | Score | Tag | File |',
     '|---|-----------|-----|-------|-----|------|',
