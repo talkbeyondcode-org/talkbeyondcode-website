@@ -1,7 +1,7 @@
 ---
 kind: Link
 tag: 'AI'
-title: 'AI advice made people less accurate but more confident – sudy'
+title: 'AI advice made people less accurate but more confident – study'
 date: 2026-07-19
 source:
   label: 'thenextweb.com'

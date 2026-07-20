@@ -108,7 +108,7 @@ const schema = [
       </h2>
       <ul class="mt-8 space-y-4">
         {
-          episodes.map((ep) => {
+          episodes.map((ep, i) => {
             const body = (
               <Fragment>
                 <span class="rounded-[10px] border border-line bg-panel px-3 py-2 font-mono text-base font-bold tabular-nums text-ink">
@@ -116,7 +116,7 @@ const schema = [
                 </span>
                 <div>
                   <div class="flex flex-wrap items-center gap-2.5">
-                    {ep.live && (
+                    {ep.live && i === 0 && (
                       <span class="inline-flex items-center rounded-full bg-gradient-to-r from-brand-cyan via-brand-violet to-brand-magenta px-2.5 py-0.5 font-mono text-[0.6rem] font-bold uppercase tracking-[0.16em] text-white">
                         New
                       </span>
