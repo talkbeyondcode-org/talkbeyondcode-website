@@ -1,4 +1,25 @@
 {
   "$comment": "Dedupe memory for collect.mjs: normalized URL -> date first surfaced as a candidate. Updated by the script each run and committed with the candidates PR, so merging the PR also records the rejects — deleted candidates don't reappear next week. Entries older than ~6 months are pruned automatically.",
-  "urls": {}
+  "urls": {
+    "openai.com/index/gpt-5-6": "2026-07-13",
+    "patrick-breyer.de/en/eu-parliament-greenlights-chat-control-1-0-breyer-our-children-lose-out": "2026-07-13",
+    "18words.com": "2026-07-13",
+    "github.com/JustVugg/colibri": "2026-07-13",
+    "jeffgeerling.com/blog/2026/quadrf-can-spot-drones-and-see-wifi-through-my-wall": "2026-07-13",
+    "systima.ai/blog/claude-code-vs-opencode-token-overhead": "2026-07-13",
+    "gist.github.com/cereblab/dc9a40bc26120f4540e4e09b75ffb547": "2026-07-13",
+    "terrytao.wordpress.com/2026/07/11/old-and-new-apps-via-modern-coding-agents": "2026-07-13",
+    "geohot.github.io//blog/jekyll/update/2026/07/12/i-love-llms.html": "2026-07-13",
+    "scrapfly.dev/posts/browser-math-os-fingerprint": "2026-07-13",
+    "io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom": "2026-07-13",
+    "evanhahn.com/prefer-strict-tables-in-sqlite": "2026-07-13",
+    "iroh.computer/blog/mesh-llm": "2026-07-13",
+    "antjs.org": "2026-07-13",
+    "scotto.me/blog/2026-07-12-how-to-read-more-books": "2026-07-13",
+    "techcrunch.com/2026/06/30/the-father-of-the-internet-is-finally-retiring": "2026-07-13",
+    "news.smol.ai/issues/26-07-10-not-much": "2026-07-13",
+    "news.smol.ai/issues/26-07-09-gpt-56": "2026-07-13",
+    "news.smol.ai/issues/26-07-08-grok-45": "2026-07-13",
+    "news.smol.ai/issues/26-07-07-not-much": "2026-07-13"
+  }
 }
