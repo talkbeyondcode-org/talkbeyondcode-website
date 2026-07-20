@@ -6,6 +6,6 @@ date: 2026-07-09
 source:
   label: 'openai.com'
   href: 'https://openai.com/index/gpt-5-6'
-draft: true
+draft: false
 ---
 OpenAI's announcement page for GPT-5.6, its latest model line, claiming more capability per token and better performance per dollar.

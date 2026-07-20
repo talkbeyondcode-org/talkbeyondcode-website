@@ -6,6 +6,6 @@ date: 2026-07-10
 source:
   label: 'techcrunch.com'
   href: 'https://techcrunch.com/2026/06/30/the-father-of-the-internet-is-finally-retiring/'
-draft: true
+draft: false
 ---
 TechCrunch reports that Vint Cerf, one of the internet's co-creators, is retiring.

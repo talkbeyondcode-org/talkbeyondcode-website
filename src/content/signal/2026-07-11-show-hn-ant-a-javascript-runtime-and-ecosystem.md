@@ -6,6 +6,6 @@ date: 2026-07-11
 source:
   label: 'antjs.org'
   href: 'https://antjs.org'
-draft: true
+draft: false
 ---
 A Show HN post for Ant, a new JavaScript runtime and surrounding ecosystem.

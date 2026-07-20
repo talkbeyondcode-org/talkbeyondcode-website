@@ -6,6 +6,6 @@ date: 2026-07-12
 source:
   label: 'geohot.github.io'
   href: 'https://geohot.github.io//blog/jekyll/update/2026/07/12/i-love-llms.html'
-draft: true
+draft: false
 ---
 George Hotz's blog post on why he likes large language models but dislikes the hype around them.
