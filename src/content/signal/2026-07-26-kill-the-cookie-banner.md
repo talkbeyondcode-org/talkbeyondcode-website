@@ -8,4 +8,4 @@ source:
   href: 'https://killthecookiebanner.eu/'
 draft: false
 ---
-(no summary available — write the note before publishing)
+An article argues for removing cookie consent banners from the web.

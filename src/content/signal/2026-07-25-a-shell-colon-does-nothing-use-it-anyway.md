@@ -8,4 +8,4 @@ source:
   href: 'https://refp.se/articles/your-shell-and-the-magic-colon'
 draft: false
 ---
-(no summary available — write the note before publishing)
+An article explains the shell colon command and common uses for it.

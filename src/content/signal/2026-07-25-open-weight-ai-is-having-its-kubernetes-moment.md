@@ -8,4 +8,4 @@ source:
   href: 'https://tobi.knaup.me/2026-07-25-open-weight-ai-is-having-its-kubernetes-moment/'
 draft: false
 ---
-(no summary available — write the note before publishing)
+An essay argues that open-weight AI is reaching a Kubernetes-like stage of adoption.

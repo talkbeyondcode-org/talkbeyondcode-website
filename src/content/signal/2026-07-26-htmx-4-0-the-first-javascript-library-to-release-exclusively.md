@@ -8,4 +8,4 @@ source:
   href: 'https://swag.htmx.org/en-cad/products/htmx-4-the-game'
 draft: false
 ---
-(no summary available — write the note before publishing)
+HTMX 4.0 is released as a JavaScript library that supports only web standards.

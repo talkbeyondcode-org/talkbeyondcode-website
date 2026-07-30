@@ -8,4 +8,4 @@ source:
   href: 'https://ptrchm.com/posts/nothing-works-and-everyone-is-euphoric/'
 draft: false
 ---
-(no summary available — write the note before publishing)
+An essay asks why software quality still declines if AI has solved coding.

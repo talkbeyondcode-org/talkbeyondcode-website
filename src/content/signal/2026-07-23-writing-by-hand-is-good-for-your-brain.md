@@ -8,4 +8,4 @@ source:
   href: 'https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your'
 draft: false
 ---
-(no summary available — write the note before publishing)
+An article reviews evidence that writing by hand can support learning and memory.

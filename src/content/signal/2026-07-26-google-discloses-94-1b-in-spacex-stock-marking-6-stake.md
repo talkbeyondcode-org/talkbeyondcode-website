@@ -8,4 +8,4 @@ source:
   href: 'https://www.wsj.com/tech/google-discloses-94-1-billion-in-spacex-stock-marking-6-stake-91655d7c'
 draft: false
 ---
-(no summary available — write the note before publishing)
+Google disclosed a $94.1 billion SpaceX stock holding, equal to a 6% stake.

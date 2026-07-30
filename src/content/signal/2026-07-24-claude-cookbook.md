@@ -8,4 +8,4 @@ source:
   href: 'https://platform.claude.com/cookbook/'
 draft: false
 ---
-(no summary available — write the note before publishing)
+Claude Cookbook collects examples and guides for building with Claude.

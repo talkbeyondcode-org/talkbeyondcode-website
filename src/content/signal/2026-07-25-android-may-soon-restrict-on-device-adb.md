@@ -8,4 +8,4 @@ source:
   href: 'https://kitsumed.github.io/blog/posts/android-may-soon-restrict-on-device-adb/'
 draft: false
 ---
-(no summary available — write the note before publishing)
+Android may restrict on-device ADB access in a future update.

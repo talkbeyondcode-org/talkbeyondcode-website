@@ -8,4 +8,4 @@ source:
   href: 'https://astral.sh/blog/ruff-v0.16.0'
 draft: false
 ---
-(no summary available — write the note before publishing)
+Ruff 0.16.0 adds updates to its default lint rules.

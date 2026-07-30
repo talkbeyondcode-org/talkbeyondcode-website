@@ -8,4 +8,4 @@ source:
   href: 'https://xn--gckvb8fzb.com/i-regret-migrating-to-codeberg/'
 draft: false
 ---
-(no summary available — write the note before publishing)
+An author reflects on regretting a move from GitHub to Codeberg.

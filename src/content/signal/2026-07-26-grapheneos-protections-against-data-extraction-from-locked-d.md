@@ -8,4 +8,4 @@ source:
   href: 'https://discuss.grapheneos.org/d/40700-grapheneos-protections-against-data-extraction-from-locked-devices'
 draft: false
 ---
-(no summary available — write the note before publishing)
+GrapheneOS explains its protections against data extraction from locked devices.

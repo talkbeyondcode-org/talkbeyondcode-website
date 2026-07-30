@@ -8,4 +8,4 @@ source:
   href: 'https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models'
 draft: false
 ---
-(no summary available — write the note before publishing)
+An article outlines context engineering practices for Claude 5 models.

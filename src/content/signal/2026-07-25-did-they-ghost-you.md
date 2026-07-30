@@ -8,4 +8,4 @@ source:
   href: 'https://didtheyghostyou.com/'
 draft: false
 ---
-(no summary available — write the note before publishing)
+An article examines why people stop replying without explanation.

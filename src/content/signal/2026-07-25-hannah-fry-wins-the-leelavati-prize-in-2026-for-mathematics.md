@@ -8,4 +8,4 @@ source:
   href: 'https://www.maths.cam.ac.uk/features/professor-hannah-fry-wins-leelavati-prize'
 draft: false
 ---
-(no summary available — write the note before publishing)
+Mathematician Hannah Fry won the 2026 Leelavati Prize for mathematics communication.

@@ -8,4 +8,4 @@ source:
   href: 'https://news.mongabay.com/2026/07/zero-roadkill-as-amazon-canopy-bridges-secure-15000-crossings/'
 draft: false
 ---
-(no summary available — write the note before publishing)
+Amazon canopy bridges have recorded 15,000 animal crossings with no reported roadkill.
