@@ -8,4 +8,4 @@ source:
   href: 'https://nikolays.github.io/PGSimCity/'
 draft: false
 ---
-(no summary available — write the note before publishing)
+An interactive simulation explains how PostgreSQL stores data, runs queries, and manages transactions.
