@@ -69,7 +69,9 @@ const schema = creators.map((c) => ({
                 />
                 <div class="min-w-0 flex-1">
                   <h2 class="text-base font-bold leading-tight tracking-tight text-ink sm:text-lg">{c.name}</h2>
-                  <p class="mt-0.5 truncate text-sm text-muted">{c.role}</p>
+                  <p class="mt-0.5 text-sm leading-snug text-muted">
+                    {c.role.split(' · ').map((part, j) => (j === 0 ? part : <> <span class="whitespace-nowrap">· {part}</span></>))}
+                  </p>
                 </div>
               </div>
               <p class="mt-4 text-sm leading-relaxed text-muted">{c.bio}</p>

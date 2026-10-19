@@ -20,9 +20,9 @@ export const creators: Creator[] = [
   {
     name: 'Sagar Vemala',
     initials: 'SV',
-    role: 'Engineering Manager @ WaveMaker',
+    role: 'Engineering Manager @ Innovapptive · ex-WaveMaker',
     focus: 'Engineering Manager · 10+ yrs',
-    bio: 'Builds product end-to-end and has opinions about every layer. Leads developer experience through WaveMaker’s shift to AI-native, agentic development.',
+    bio: 'Builds product end-to-end and has opinions about every layer. Led developer experience through WaveMaker’s shift to AI-native, agentic development.',
     stack: ['TypeScript', 'React', 'Node', 'LLM tooling'],
     talks: ['AI workflows', 'DX', 'Architecture'],
     photo: '/creators/sagar.jpg',
@@ -31,7 +31,7 @@ export const creators: Creator[] = [
   {
     name: 'Vivek Raj',
     initials: 'VR',
-    role: 'AI Engineer @ WaveMaker',
+    role: 'SDE2 @ Innovapptive · ex-WaveMaker',
     focus: 'LLM apps · RAG · MCP',
     bio: 'Went from application developer to AI engineer during the LLM wave. Ships LLM apps, RAG systems and MCP-based tooling in production.',
     stack: ['Python', 'LLMs', 'RAG', 'MCP'],
