@@ -31,7 +31,7 @@ export const creators: Creator[] = [
   {
     name: 'Vivek Raj',
     initials: 'VR',
-    role: 'AI Engineer @ WaveMaker',
+    role: 'SDE2 @ Innovapptive · ex-WaveMaker',
     focus: 'LLM apps · RAG · MCP',
     bio: 'Went from application developer to AI engineer during the LLM wave. Ships LLM apps, RAG systems and MCP-based tooling in production.',
     stack: ['Python', 'LLMs', 'RAG', 'MCP'],
